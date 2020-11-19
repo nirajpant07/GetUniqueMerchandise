@@ -1,6 +1,6 @@
 
     <!--/shipping-->
-    <section class="shipping-wthree">
+    <section class="shipping-wthree" *ngIf="!(basicService.getUserRole()==='Admin')">
         <div class="shiopping-grids d-lg-flex">
             <div class="col-lg-4 shiopping-w3pvt-gd text-center">
                 <div class="icon-gd"><span class="fa fa-truck" aria-hidden="true"></span>
@@ -30,7 +30,7 @@
     </section>
     <!--//shipping-->
     <!-- footer -->
-    <div class="footer_agileinfo_topf py-5">
+    <div class="footer_agileinfo_topf py-5" *ngIf="!(basicService.getUserRole()==='Admin')">
         <div class="container py-md-5">
             <div class="row">
                 <div class="col-lg-3 footer_wthree_gridf mt-lg-5">
