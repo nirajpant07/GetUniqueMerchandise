@@ -13,7 +13,6 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class BasicService {
   //signin variable 
     signinForm: FormGroup;
-  isFormvalid;
   baseURL: string ="http://192.168.43.12:9000";
   constructor(private http: HttpClient,private router: Router,private jwthelper: JwtHelperService) { }
 
