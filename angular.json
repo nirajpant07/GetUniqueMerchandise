@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "GUM"
+    }
+  },
+  "defaultProject": "GUM",
+  "cli": {
+    "analytics": false
+  }
 }
