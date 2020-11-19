@@ -1,0 +1,58 @@
+<div class="main-sec">
+    <!-- //header -->
+    <header class="py-sm-3 pt-3 pb-2" id="home">
+        <div class="container">
+            <!-- nav -->
+            <div class="top-w3pvt d-flex">
+                <div id="logo">
+                    <h1> <a href="index.html"><span class="log-w3pvt">G</span>et<span class="log-w3pvt">U</span>nique <span class="log-w3pvt">M</span>erchandise</a> <label class="sub-des">Online Store</label></h1>
+                </div>
+
+                <div class="forms ml-auto">
+                    <a *ngIf="basicService.isLoggedIn()" routerLink="/signin" class="btn"><span class="fa fa-user-circle-o"></span> Sign In</a>
+                    <a *ngIf="basicService.isLoggedIn()" routerLink="/signup" class="btn"><span class="fa fa-pencil-square-o"></span> Sign Up</a>
+                    <a *ngIf="!basicService.isLoggedIn()" class="btn"><span class="fa fa-user-circle-o"></span>Admin</a>
+                    <a *ngIf="!basicService.isLoggedIn()" (click)="basicService.logout()" class="btn"><span class="fa fa-sign-out"></span>Logout</a>
+
+                </div>
+            </div>
+            <div class="nav-top-wthree" *ngIf="!(basicService.getUserRole()==='Admin')">
+                <nav>
+                    <label for="drop" class="toggle"><span class="fa fa-bars"></span></label>
+                    <input type="checkbox" id="drop" />
+                    <ul class="menu">
+                        <li class="active"><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li>
+                            <!-- First Tier Drop Down -->
+                            <label for="drop-2" class="toggle">Dropdown <span class="fa fa-angle-down" aria-hidden="true"></span>
+                            </label>
+                            <a href="#">Dropdown <span class="fa fa-angle-down" aria-hidden="true"></span></a>
+                            <input type="checkbox" id="drop-2" />
+                            <ul>
+                                <li><a href="coming.html" class="drop-text">Services</a></li>
+                                <li><a href="about.html" class="drop-text">Features</a></li>
+                                <li><a href="single.html" class="drop-text">Single Page</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li><a href="shop.html">Collections</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <!-- //nav -->
+                <div class="search-form ml-auto">
+                    <div class="form-w3layouts-grid">
+                        <form action="#" method="post" class="newsletter">
+                            <input class="search" type="search" placeholder="Search here..." required="">
+                            <button class="form-control btn" value=""><span class="fa fa-search"></span></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </header>
+    <!-- //header -->
+</div>
