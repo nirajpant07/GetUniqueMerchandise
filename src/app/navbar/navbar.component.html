@@ -52,6 +52,40 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
+            <div class="nav-top-wthree" *ngIf="(basicService.getUserRole()==='Admin')">
+                <nav>
+                    <label for="drop" class="toggle"><span class="fa fa-bars"></span></label>
+                    <input type="checkbox" id="drop" />
+                    <ul class="menu">
+                        <li>
+                            <!-- First Tier Drop Down -->
+                            <label for="drop-2" class="toggle">CATEGORY <span class="fa fa-angle-down" aria-hidden="true"></span>
+                            </label>
+                            <a href="#">CATEGORY <span class="fa fa-angle-down" aria-hidden="true"></span></a>
+                            <input type="checkbox" id="drop-2" />
+                            <ul>
+                                <li><a href="coming.html" class="drop-text">ADD</a></li>
+                                <li><a href="about.html" class="drop-text">MANAGE</a></li>
+
+                            </ul>
+                        </li>
+
+                        <li><a routerLink="/category">CATEGORY</a></li>
+                        <li><a href="shop.html">SUBCATEGORY</a></li>
+                        <li><a href="contact.html">PRODUCT</a></li>
+                    </ul>
+                </nav>
+                <!-- //nav -->
+                <div class="search-form ml-auto">
+                    <div class="form-w3layouts-grid">
+                        <form action="#" method="post" class="newsletter">
+                            <input class="search" type="search" placeholder="Search here..." required="">
+                            <button class="form-control btn" value=""><span class="fa fa-search"></span></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
         </div>
     </header>
     <!-- //header -->

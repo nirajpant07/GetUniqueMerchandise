@@ -242,7 +242,7 @@ nav a:hover {
 nav ul ul {
     display: none;
     position: absolute;
-    top: 30px;
+    top: 0px;  /* use to position the dropdown      */
     background: #fff;
     padding: 10px;
     -moz-box-shadow: 1px 3px 8px 0 rgba(0, 0, 0, 0.15);

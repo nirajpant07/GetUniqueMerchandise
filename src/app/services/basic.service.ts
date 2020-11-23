@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { User } from '../models/User';
 import { Token } from '../models/token';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from '../../environments/environment';
+
 
 
 @Injectable({
@@ -13,7 +15,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class BasicService {
   //signin variable 
     signinForm: FormGroup;
-  baseURL: string ="http://192.168.43.12:9000";
+  baseURL: string =environment.baseUrl;
   constructor(private http: HttpClient,private router: Router,private jwthelper: JwtHelperService) { }
 
   validateUser(loginCredentials : User)

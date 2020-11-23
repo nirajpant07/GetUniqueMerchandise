@@ -10,9 +10,11 @@ import { FooterComponent } from './footer/footer.component';
 import { SignupComponent } from './signup/signup.component';
 import { SigninComponent } from './signin/signin.component';
 import { BasicService } from './services/basic.service';
+import { CategoryService } from './services/category.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthGuard } from '../app/gaurds/auth.guard';
 import { AdminComponent } from './admin/admin.component';
+import { CategoryComponent } from './admin/category/category.component';
 
 export function tokeGetter()
 {
@@ -27,6 +29,7 @@ export function tokeGetter()
     SignupComponent,
     SigninComponent,
     AdminComponent,
+    CategoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,7 @@ export function tokeGetter()
       }
     })
   ],
-  providers: [BasicService,AuthGuard],
+  providers: [BasicService,AuthGuard,CategoryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
