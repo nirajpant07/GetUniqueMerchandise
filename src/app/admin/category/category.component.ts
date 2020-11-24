@@ -79,7 +79,12 @@ export class CategoryComponent implements OnInit {
     this.searchKeyword=(event.target as HTMLInputElement).value;    
     if(this.searchKeyword!=""){
       this.categories=this.categoryService.categoryList.filter(res=>{
-        return res.CategoryName.toLowerCase().match(this.searchKeyword.toLowerCase());
+        let x=res.CategoryName.toLowerCase().match(this.searchKeyword.toLowerCase());
+        if(x==null)
+        {
+          x=res.Description.toLowerCase().match(this.searchKeyword.toLowerCase());
+        }
+        return x;
       });
     }
     else

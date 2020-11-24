@@ -26,6 +26,6 @@ export class CategoryService {
     return this.http.get(this.baseURL+"/api/Category/");
   }
   delete(categoryID:number){
-    return this.http.delete(this.baseURL+"/api/Category/"+categoryID);
+    return this.http.get(this.baseURL+"/api/Category/DeleteCategory?id="+categoryID);
   }
 }

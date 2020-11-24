@@ -15,12 +15,9 @@ import { environment } from '../../environments/environment';
 export class BasicService {
   //signin variable 
     signinForm: FormGroup;
-<<<<<<< HEAD
   baseURL: string =environment.baseUrl;
-=======
-    isValid:true;
-  baseURL: string ="http://192.168.43.12:9000";
->>>>>>> 0e5d7e65dadf687762ba18e6393f896914cbfb50
+
+
   constructor(private http: HttpClient,private router: Router,private jwthelper: JwtHelperService) { }
 
   validateUser(loginCredentials : User)
