@@ -16,7 +16,6 @@ export class BasicService {
   //signin variable 
     signinForm: FormGroup;
   baseURL: string =environment.baseUrl;
-    isValid:true;
   constructor(private http: HttpClient,private router: Router,private jwthelper: JwtHelperService) { }
 
   validateUser(loginCredentials : User)
