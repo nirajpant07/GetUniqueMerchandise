@@ -28,4 +28,8 @@ export class CategoryService {
   delete(categoryID:number){
     return this.http.get(this.baseURL+"/api/Category/DeleteCategory?id="+categoryID);
   }
+  update(category:Category)
+  {
+    return this.http.post(this.baseURL+"/api/Category/Update/",category);
+  }
 }

@@ -33,11 +33,13 @@ export class BasicService {
   {
      return this.http.get(this.baseURL+"/api/Account/");
   }
+
   isLoggedIn():boolean
   {
     const token = localStorage.getItem("jwt");
     return this.jwthelper.isTokenExpired(token);
   }
+  
   roleMatch(allowedRole :string): boolean 
   {
     var isMatched=false

@@ -7,16 +7,19 @@
                 <form [formGroup]="categoryService.CategoryForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
                     <div class="form-row">
                         <div class="form-group p-1">
-                            <input class="form-control" formControlName="CategoryName" type="text" placeholder="Name">
+                            <input class="form-control" formControlName="CategoryName" type="text" placeholder="Name" autofocus>
+                            <span class="alert-danger" *ngIf="CategoryName.touched && CategoryName.errors?.required">Please provide category name!</span>
                         </div>
                         <div class="form-group p-1">
                             <input class="form-control" formControlName="Description" type="text" placeholder="Description">
+                            <span class="alert-danger" *ngIf="Description.touched && Description.errors?.required">Please provide description name!</span>
                         </div>
                         <div class="form-group p-1">
                             <input class="form-file" (change)="onImageChange($event)"  type="file" >
+                            <span class="alert-danger" *ngIf="Image.touched && Image.errors?.required">Please provide image name!</span>
                         </div>
                         <div class="form-group p-1">
-                            <button class="btn btn-info form-control">SAVE</button>
+                            <button [disabled]="categoryService.CategoryForm.invalid" class="btn btn-info form-control">SAVE</button>
                         </div>
                     </div>
                 </form>
@@ -55,7 +58,8 @@
                             <td>{{c.Description}}</td>
                             <td><img class="img-responsive" style="height: 7em;width:11em;" src="{{c.Image}}" alt="{{c.CategoryName}}"></td>
                             <td><button (click)="deleteCategory(c)"  data-toggle="tooltip" title="Delete"
-                                class="btn btn-danger"><i class="fa fa-trash fa-1x"></i></button></td>
+                                class="btn btn-danger m-1"><i class="fa fa-trash fa-1x"></i></button>  <button (click)="editCategory(c)"  data-toggle="tooltip" title="Edit"
+                                    class="btn btn-warning text-white m-1"><i class="fa fa-pencil fa-1x"></i></button></td>
                           </tr>                       
                         </tbody>
                       </table>
