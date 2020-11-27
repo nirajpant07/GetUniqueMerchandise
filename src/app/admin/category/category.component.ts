@@ -10,8 +10,9 @@ import { Category } from 'src/app/models/Category';
 })
 export class CategoryComponent implements OnInit {
 
-  defaultImageURL: any ="assets/images/bag1.png";
-  imageURL:any="assets/images/bag1.png";
+  defaultImageURL: any ="assets/images/default-image.jpg";
+  //imageURL:any=this.defaultImageURL;
+  ResultedFile:any=this.defaultImageURL;
   filetoUpload:File;
   categories : Category[];
   searchKeyword:any;
@@ -41,12 +42,13 @@ export class CategoryComponent implements OnInit {
     this.filetoUpload=event.target.files[0];
     var reader= new FileReader();
     reader.onload=(event:any)=>{
+      this.ResultedFile=reader.result;
       this.categoryService.CategoryForm.patchValue(
         {
           Image: reader.result
        }
       );
-      this.imageURL=event.target.result;
+      //this.imageURL=event.target.result;
       this.cd.markForCheck();
     }
     reader.readAsDataURL(this.filetoUpload);
@@ -117,6 +119,7 @@ export class CategoryComponent implements OnInit {
         (data:any)=>{
           this.categories=data;
           this.categoryService.categoryList=data;
+          this.resetForm();
         },
         (err:any)=>{
           console.log("Error occurred!");
@@ -133,9 +136,10 @@ export class CategoryComponent implements OnInit {
     this.categoryService.CategoryForm.controls['CategoryID'].setValue(category.CategoryID);
     this.categoryService.CategoryForm.controls['CategoryName'].setValue(category.CategoryName);
     this.categoryService.CategoryForm.controls['Description'].setValue(category.Description);
-    this.imageURL=category.Image;
+    this.ResultedFile=category.Image;
     //this.categoryService.CategoryForm.controls['Image'].setValue(category.Image);
   }
+
   update(category:Category)
   {
     this.categoryService.update(category).subscribe(
@@ -152,8 +156,9 @@ export class CategoryComponent implements OnInit {
       }
     );
   }
+
   resetForm(){
     this.createForm();
-    this.imageURL=this.defaultImageURL;
+    this.ResultedFile=this.defaultImageURL;
   }
 }

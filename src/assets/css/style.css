@@ -1436,7 +1436,8 @@ h3.sub-w3ls-headf {
 
 @media(max-width:1366px) {
     .main-sec {
-        min-height: 12em;
+        /* use to set the navbar height  */
+        min-height: 13em;       
         position: relative;
     }
 

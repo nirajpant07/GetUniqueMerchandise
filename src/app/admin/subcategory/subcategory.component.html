@@ -1,1 +1,89 @@
-<p>subcategory works!</p>
+<div class="container">
+    <div class="row mt-3" style="border: 0.01em rgb(59, 178, 233) solid;" >
+        <!-- Category form -->
+            <div class="col-lg-8 col-md-6 col-sm-4 mt-2" style="align-items: center;" >
+                <h4 class="text-center mb-3">Manage Subcategory</h4>
+                <form [formGroup]="subcategoryService.SubcategoryForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="form-group p-1">
+                            <select class="form-control" style="width:18em;" formControlName="CategoryID" autofocus>
+                                <option value="" disabled selected>Choose your category</option>
+                                <option *ngFor="let c of categories" [ngValue]="c.CategoryID">
+                                    {{c.CategoryName}}</option>
+                            </select>
+                             <span class="alert-danger" *ngIf="CategoryID.touched && CategoryID.errors?.required">Please select category!</span>
+                        </div>
+                        <div class="form-group p-1">
+                            <input class="form-control" style="width:18em;" formControlName="SubcategoryName" type="text" placeholder="Name" >
+                            <span class="alert-danger" *ngIf="SubcategoryName.touched && SubcategoryName.errors?.required">Please enter subcategory!</span>
+                        </div>
+                    </div>
+                    <div class="form-row">                   
+                        <div class="form-group p-1">
+                            <textarea class="form-control" cols="35" formControlName="Description" placeholder="Description"></textarea>
+                            <span class="alert-danger" *ngIf="Description.touched && Description.errors?.required">Please enter description!</span>
+                        </div>
+                        <div class="form-group p-1">                          
+                            <input class="form-file"  formControlName="Image" (change)="onImageChange($event)" type="file" > <br>
+                            <span class="alert-danger" *ngIf="Image.touched && Image.errors?.required">Please select image!</span>
+                        </div>                       
+
+                    </div>
+                    <div class="form-group">
+                        <button style="width: auto;" [disabled]="subcategoryService.SubcategoryForm.invalid"class="btn btn-info form-control">SAVE</button>
+                    </div>
+                </form>
+            </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-2 p-5 d-flex justify-content-center" style="border:0px solid black;" >
+            <img class="img-responsive" *ngIf="ResultedFile" [src]="ResultedFile" style="width:240px;height:240px;" >
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center mt-3 p-3" style="border: 0.01em rgb(59, 178, 233) solid;" >
+            <!-- category data table  -->
+    
+            
+            <div class="col-lg-12 col-md-10 col-sm-4 " >
+                    <div class="table-responsive" style="overflow-y: scroll; height:450px;">
+                        <table class="table table-hover" >
+                            <thead>
+                              <tr class="table-info">
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">
+                                    Category
+                                    <select (change)="categoryFilter($event)" >
+                                    <option value="All">All</option>
+                                    <option *ngFor="let c of categories" [ngValue]="c.CategoryID">
+                                        {{c.CategoryName}}</option>
+                                </select></th>
+                                <th scope="col">Image</th>
+                                
+                                <th scope="col">
+
+                                        <input  style="width:15em;" class="form-control" (keyup)="search($event)" type="text" placeholder="Search here">
+
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let s of subcategories; let i =index">
+                                <th scope="row">{{i+1}}</th>
+                                <td>{{s.SubcategoryName}}</td>
+                                <td>{{s.Description}}</td>
+                                <td>{{s.CategoryName}}</td>
+                                <td><img class="img-responsive" style="height: 7em;width:11em;" src="{{s.Image}}" alt="{{s.SubcategoryName}}"></td>
+                                
+                                <td style="width: 100px;"><button  data-toggle="tooltip" title="Delete"
+                                    (click)="deleteSubcategory(s)" class="btn btn-danger m-1"><i class="fa fa-trash fa-1x"></i></button>  <button   data-toggle="tooltip" title="Edit"
+                                    (click)="editSubcategory(s)" class="btn btn-warning text-white m-1"><i class="fa fa-pencil fa-1x"></i></button></td>
+                              </tr>                       
+                            </tbody>
+                          </table>
+                    </div>
+            </div>
+
+    </div>
+
+</div>

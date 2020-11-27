@@ -1,7 +1,7 @@
 export class Subcategory{
     SubcategoryID :number;
     CategoryID : number;
-    CategoryName:string
+    CategoryName:string;
     SubcategoryName : string;
     Description : string;
     Image : File;
