@@ -12,11 +12,14 @@ import { SigninComponent } from './signin/signin.component';
 import { BasicService } from './services/basic.service';
 import { CategoryService } from './services/category.service';
 import { SubcategoryService } from './services/subcategory.service';
+import { ProductService } from './services/product.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthGuard } from '../app/guards/auth.guard';
 import { AdminComponent } from './admin/admin.component';
 import { CategoryComponent } from './admin/category/category.component';
 import { SubcategoryComponent } from './admin/subcategory/subcategory.component';
+import { ProductComponent } from './admin/product/product.component';
+import { AddproductComponent } from './admin/product/addproduct/addproduct.component';
 
 export function tokeGetter()
 {
@@ -33,6 +36,8 @@ export function tokeGetter()
     AdminComponent,
     CategoryComponent,
     SubcategoryComponent,
+    ProductComponent,
+    AddproductComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,7 +53,7 @@ export function tokeGetter()
       }
     })
   ],
-  providers: [BasicService,AuthGuard,CategoryService,SubcategoryService],
+  providers: [BasicService,AuthGuard,CategoryService,SubcategoryService,ProductService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -24,7 +24,7 @@
                             <span class="alert-danger" *ngIf="Description.touched && Description.errors?.required">Please enter description!</span>
                         </div>
                         <div class="form-group p-1">                          
-                            <input class="form-file"  formControlName="Image" (change)="onImageChange($event)" type="file" > <br>
+                            <input class="form-file"  formControlName="Image" (change)="onImageChange($event)" type="file"> <br>
                             <span class="alert-danger" *ngIf="Image.touched && Image.errors?.required">Please select image!</span>
                         </div>                       
 
