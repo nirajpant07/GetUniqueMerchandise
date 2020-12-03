@@ -18,7 +18,7 @@ export class AddproductComponent implements OnInit {
   categories:Category[];
   subcategories:Subcategory[];
   file: File;
-  images:String[];
+  images:string[];
   constructor(
   public productService: ProductService,
   private fb: FormBuilder,
@@ -88,18 +88,20 @@ export class AddproductComponent implements OnInit {
   {
     let length=event.target.files.length;
     console.log(event.target.files);
-    let  reader;
     this.images=new Array();
     for(let i=0;i<length;i++)
     {
       this.file=event.target.files[i];
       console.log(this.file);
-      reader=new FileReader();
+      let  reader=new FileReader();
       reader.readAsDataURL(this.file);  
       reader.onload=()=>{       
-        this.images.push(reader.result);
+        this.images.push(reader.result.toString());
         this.cd.markForCheck();
       }       
+    }
+    if(this.images[0]==this.images[1]){
+      console.log("Same");
     }
     console.log(this.images);
   }
