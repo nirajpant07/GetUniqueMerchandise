@@ -14,46 +14,45 @@ import { environment } from '../../environments/environment';
 })
 export class BasicService {
   //signin variable 
-    signinForm: FormGroup;
-  baseURL: string =environment.baseUrl;
+  signinForm: FormGroup;
+  //signup variable
+  signupForm: FormGroup;
+  baseURL: string = environment.baseUrl;
 
 
-  constructor(private http: HttpClient,private router: Router,private jwthelper: JwtHelperService) { }
+  constructor(private http: HttpClient, private router: Router, private jwthelper: JwtHelperService) { }
 
-  validateUser(loginCredentials : User)
-  {
-    return this.http.post(this.baseURL+"/api/Auth/Login/",loginCredentials);
-  }
-  public logout()
-  {
-      localStorage.removeItem("jwt");
-      this.router.navigateByUrl("/home");
-  }
-  getDetails()
-  {
-     return this.http.get(this.baseURL+"/api/Account/");
+  validateUser(loginCredentials: User) {
+    return this.http.post(this.baseURL + "/api/Auth/Login/", loginCredentials);
   }
 
-  isLoggedIn():boolean
-  {
+  signupUser(userData:User){
+    return this.http.post("https://localhost:44388/api/Authentication/Signup/",userData);
+  }
+  public logout() {
+    localStorage.removeItem("jwt");
+    this.router.navigateByUrl("/home");
+  }
+  getDetails() {
+    return this.http.get(this.baseURL + "/api/Account/");
+  }
+
+  isLoggedIn(): boolean {
     const token = localStorage.getItem("jwt");
     return this.jwthelper.isTokenExpired(token);
   }
-  
-  roleMatch(allowedRole :string): boolean 
-  {
-    var isMatched=false
-    var userRole:string=this.getUserRole();
-    if(userRole===allowedRole)
-    {
-      isMatched=true;
+
+  roleMatch(allowedRole: string): boolean {
+    var isMatched = false
+    var userRole: string = this.getUserRole();
+    if (userRole === allowedRole) {
+      isMatched = true;
     }
     return isMatched;
   }
-  getUserRole():string
-  {
-    const token :Token=this.jwthelper.decodeToken(localStorage.getItem("jwt"));
-    if(token==null)
+  getUserRole(): string {
+    const token: Token = this.jwthelper.decodeToken(localStorage.getItem("jwt"));
+    if (token == null)
       return "";
     return token.Role;
   }

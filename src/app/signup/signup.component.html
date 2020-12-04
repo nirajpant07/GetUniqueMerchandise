@@ -6,29 +6,39 @@
                     <span class="fa fa-user-circle-o"></span>
                 </div>
                 <div class="content-bottom">
-                    <form action="#" method="post">
+                    <form [formGroup]="basicService.signupForm" (ngSubmit)="onSignup()">
                         <div class="field-group">
                             <div class="content-input-field">
-                                <input name="text1" id="text1" type="text" value="" placeholder="User Name" required="">
+                                <input formControlName="FirstName" placeholder="First Name" required="">
                             </div>
                         </div>
                         <div class="field-group">
                             <div class="content-input-field">
-                                <input name="text1" id="text1" type="email" value="" placeholder="User Email" required="">
+                                <input formControlName="MiddleName" placeholder="Middle Name">
                             </div>
                         </div>
                         <div class="field-group">
                             <div class="content-input-field">
-                                <input name="text1" id="text3" type="text" value="" placeholder="UserPhone" required="">
+                                <input formControlName="LastName" placeholder="Last Name" required="">
                             </div>
                         </div>
                         <div class="field-group">
                             <div class="content-input-field">
-                                <input name="password" id="myInput" type="Password" placeholder="Password">
+                                <input formControlName="Email" placeholder="someone@email.com" type="email" required="">
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <div class="content-input-field">
+                                <input formControlName="Phone" placeholder="1234567890" required="">
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <div class="content-input-field">
+                                <input formControlName="Password" placeholder="Password" type="password" required="">
                             </div>
                         </div>
                         <div class="content-input-field">
-                            <button type="submit" class="btn">Sign Up</button>
+                            <button [disabled]="basicService.signupForm.invalid" type="submit" class="btn">Sign Up</button>
                         </div>
                         <div class="list-login-bottom text-center mt-lg-5 mt-4">
                             <a href="#" class="">By clicking Signup, I agree to your terms</a>
