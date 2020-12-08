@@ -1,6 +1,129 @@
 <div class="container">
+    <div class="row" >
+        <div class="col-lg-8 col-md-6 col-sm-6">
+            
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="form-group">
+                <button class="btn btn-primary m-2" (click)="viewProducts()">VIEW PRODUCTS</button>
+            </div>
+        </div>
+    </div>
+    
+    <form [formGroup]="productService.PruductForm" (ngSubmit)="onSubmit()">
+        
+        <div class="row p-4" style="border:1px solid black;">
+        
+            <div class="col-lg-6" style="border:0px solid black;">
+                <h2 class="m-2 text-center">ADD Product</h2>
+                <div class="form-group m-2">
+                    <select class="form-control"  (change)="onCategoryChange($event)" formControlName="CategoryID">
+                        <option value="" disabled selected>Choose category</option>
+                        <option *ngFor="let c of categories" [ngValue]="c.CategoryID">
+                            {{c.CategoryName}}</option>
+                    </select>
+                    <span class="alert-danger" *ngIf="CategoryID.touched && CategoryID.errors?.required">Please select category !</span>
+                </div>
+                <div class="form-group m-2">
+                    <select class="form-control"  formControlName="SubcategoryID">
+                        <option value="" disabled selected>Choose subcategory</option>
+                        <option *ngFor="let c of subcategories" [ngValue]="c.SubcategoryID">
+                            {{c.SubcategoryName}}</option>
+                    </select>
+                    <span class="alert-danger" *ngIf="SubcategoryID.touched && SubcategoryID.errors?.required">Please select subcategory !</span>
+                </div>
+                <div class="form-group m-2">
+                    <input placeholder="Name" formControlName="ProductName" class="form-control" type="text">
+                    <span class="alert-danger" *ngIf="ProductName.touched && ProductName.errors?.required">Please enter product name!</span>
+                </div>
+                <div class="form-group m-2">
+                    <input placeholder="Color" formControlName="Color" class="form-control" type="text" >
+                    <span class="alert-danger" *ngIf="Color.touched && Color.errors?.required">Please enter color! </span>
+                </div>
+                <div class="form-group m-2">
+                    <input placeholder="Unit Price (in Rs.)" formControlName="UnitPrice" class="form-control" type="number" >
+                    <span class="alert-danger" *ngIf="UnitPrice.touched && UnitPrice.errors?.required">Please enter per unit price!</span>
+                </div>              
+                <div class="form-group m-2">
+                    <input placeholder="Discount (%)" formControlName="DiscountPercentage" class="form-control" type="number" >
+                    <span class="alert-danger" *ngIf="DiscountPercentage.touched && DiscountPercentage.errors?.required">Please enter discount in (%) !</span>
+                </div>
+                <div class="form-group m-2">
+                    <textarea class="form-control" formControlName="ProductDescription" placeholder="Description" cols="50" rows="4"></textarea>
+                    <span class="alert-danger" *ngIf="ProductDescription.touched && ProductDescription.errors?.required">Please enter product description!</span>
+                </div>
+
+                <strong>Select Images :</strong>
+                <div class="form-group  m-2">
+                    <input type="file" formControlName="Files" (change)="onImageSelected($event)" multiple>
+                    <span class="alert-danger" *ngIf="Files.touched && Files.errors?.required">Please select atleast 1 image!</span>
+                </div>
+
+                <strong>Select Sizes :</strong>
+                <div class="form-row ">
+                        <div class=" form-group m-1" formArrayName="Stocks"
+                            *ngFor="let size of productService.PruductForm.get('Stocks')['controls'];let i=index">
+                            <div class="form-row" [formGroupName]="i">
+                                <div class="form-group m-1">
+                                    <select class="form-control"  (change)="onSizeSelect($event)" formControlName="SizeID">
+                                          <option value="" disabled selected>Choose Size</option>
+                                          
+                                            <option *ngFor="let s of sizes" [disabled]="s.Selected == true" [ngValue]="s.SizeID">
+                                                {{s.Name}}</option>
+                                         
+                                          
+                                    </select>
+                                    <span class="alert-danger" *ngIf="stocks.controls[i].get('SizeID').touched && stocks.controls[i].get('SizeID').errors?.required">Please select size!</span>
+                              </div>
+                                <div class="form-group m-1">
+                                    <input type="text" style="width: 120px;" placeholder="Quantity"
+                                        formControlName="Quantity" class="form-control">
+                                        <span class="alert-danger" *ngIf="stocks.controls[i].get('Quantity').touched && stocks.controls[i].get('Quantity').errors?.required">Please enter quantity!</span>
+                                </div> 
+                                <div *ngIf="productService.PruductForm.get('Stocks')['controls'].length!=1">
+                                    <a (click)="deleteSize(i)" *ngIf="(productService.PruductForm.get('Stocks')['controls'].length-1)!=i"><i style="color:red;font-size:x-large" class="fa fa-window-close m-2" aria-hidden="true"></i></a>   
+                                </div>
+                                                        
+                            </div>
+                        </div>
+
+                        <div class="form-group m-1">
+                            
+                            <button type="button"
+                                [disabled]="productService.PruductForm.get('Stocks')['controls'].length===5"
+                                class="btn btn-primary m-1" (click)="addStock()">+ </button>                           
+                            <button type="button"
+                                [disabled]="productService.PruductForm.get('Stocks')['controls'].length===1"
+                                class="btn btn-danger text-white m-1" (click)="deleteStock(productService.PruductForm.get('Stocks')['controls'].length)">- </button>
+                        </div>
+                        
+                </div>
+                
+            </div>
+            <div class="col-lg-6" style="border:0px solid black;">
+                <p class="h2" style="text-align: center;">Image Preview</p>
+                <div class="row" style="overflow-y: scroll; height:500px;">
+                   
+                    <div class="m-4 p-0" *ngFor="let i of images">
+                        <img class="img-thumbnail" [src]="i" height="200" width="200" style="border:0px solid black;">
+                    </div>
+                    
+                </div>
+                <div class="form-group d-flex justify-content-center m-2">
+                    <button [disabled]="productService.PruductForm.invalid" class=" form-control btn btn-success ">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <!-- <div class="row" style="border: 1px solid black;" >
+        <h4 class="d-flex justify-content-center">Image Preview</h4>
+        <div class="p-3" *ngFor="let i of images">
+            <img [src]="i" height="100" width="100">
+        </div>
+    </div>
     <div class="row">
-        <div class="col-lg-8 p-4" style="border: 1px solid black;">
+        <div class="col-lg-8 p-4" style="border: 0px solid black;">
             <div class="row" >
                 <div class="col-lg-8 col-md-6 col-sm-6">
                     <h3 class="m-2">ADD Product</h3>
@@ -16,35 +139,12 @@
 
                 <div class="form-row">
                     <div class="form-group m-1">
-                        <input placeholder="Name" formControlName="ProductName" class="form-control" type="text" autofocus>
-                    </div>
-                    <div class="form-group m-1">
-                        <input placeholder="Unit Price (in Rs.)" formControlName="UnitPrice" class="form-control" type="text" >
-                    </div>
-                    <div class="form-group m-1">
-                        <input placeholder="Color" formControlName="Color" class="form-control" type="text" >
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group m-1">
-                        <textarea class="form-control" formControlName="ProductDescription" placeholder="Description" cols="50" rows="4"></textarea>
-                    </div>
-                    <div class="form-group  m-1">
-                        <input type="file" (change)="onImageSelected($event)" multiple>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group m-1">
-                        <input placeholder="Discount (%)" formControlName="DiscountPercentage" class="form-control" type="text" >
-                    </div>
-                    <div class="form-group m-1">
                         <select class="form-control"  formControlName="CategoryID">
                             <option value="" disabled selected>Choose category</option>
                             <option *ngFor="let c of categories" [ngValue]="c.CategoryID">
                                 {{c.CategoryName}}</option>
                         </select>
+                        <span class="alert-danger" *ngIf="CategoryID.touched && CategoryID.errors?.required">Please select category !</span>
                     </div>
                     <div class="form-group m-1">
                         <select class="form-control"  formControlName="SubcategoryID">
@@ -52,18 +152,109 @@
                             <option *ngFor="let c of subcategories" [ngValue]="c.SubcategoryID">
                                 {{c.SubcategoryName}}</option>
                         </select>
+                        <span class="alert-danger" *ngIf="SubcategoryID.touched && SubcategoryID.errors?.required">Please select subcategory !</span>
+                    </div>
+                    <div class="form-group m-1">
+                        <input placeholder="Name" formControlName="ProductName" class="form-control" type="text">
+                        <span class="alert-danger" *ngIf="ProductName.touched && ProductName.errors?.required">Please enter product name!</span>
+                    </div>
+                  
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group m-1">
+                        <textarea class="form-control" formControlName="ProductDescription" placeholder="Description" cols="50" rows="4"></textarea>
+                        <span class="alert-danger" *ngIf="ProductDescription.touched && ProductDescription.errors?.required">Please enter product description!</span>
+                    </div>
+                    <div class="form-group  m-1">
+                        <input type="file" formControlName="Files" (change)="onImageSelected($event)" multiple>
+                        <span class="alert-danger" *ngIf="Files.touched && Files.errors?.required">Please select atleast 1 image!</span>
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group m-1">
-                        <button class="btn btn-success">Save</button>
+                        <input placeholder="Color" formControlName="Color" class="form-control" type="text" >
+                        <span class="alert-danger" *ngIf="Color.touched && Color.errors?.required">Please enter color! </span>
+                    </div>
+                    <div class="form-group m-1">
+                        <input placeholder="Unit Price (in Rs.)" formControlName="UnitPrice" class="form-control" type="number" >
+                        <span class="alert-danger" *ngIf="UnitPrice.touched && UnitPrice.errors?.required">Please enter per unit price!</span>
+                    </div>
+                    
+                    <div class="form-group m-1">
+                        <input placeholder="Discount (%)" formControlName="DiscountPercentage" class="form-control" type="number" >
+                        <span class="alert-danger" *ngIf="DiscountPercentage.touched && DiscountPercentage.errors?.required">Please enter discount in (%) !</span>
+                    </div>
+                </div>
+                <div class="form-row">
+                  
+                    <div class="form-group m-1 p-2" style="border: 1px solid black">
+                        <select class="form-control"  formControlName="SizeID">
+                            <option value="" disabled selected>Choose Size</option>
+                            <option *ngFor="let s of sizes" [ngValue]="s.SizeID">
+                                {{s.Name}}-{{s.Description}}</option>
+                        </select> 
+                        <strong>Select Sizes :</strong>  
+                        <div class="m-2" *ngFor="let s of sizes" style="display: inline;">
+                            <input  type="checkbox"  [ngValue]="s.SizeID" >&nbsp;{{s.Name}}&nbsp; 
+                        </div>
+                        
+                        <span class="alert-danger" *ngIf="SizeID.touched && SizeID.errors?.required">Please select size !</span>
+                    </div>
+                    <div class="form-group m-1">
+                        <input placeholder="Quantity" formControlName="Quantity" class="form-control" type="text" >
+                        <span class="alert-danger" *ngIf="Quantity.touched && Quantity.errors?.required">Please enter quantity! </span>
+                    </div>
+                </div> 
+                <strong>Select Sizes :</strong>
+                <div class="form-row ">
+                        <div class=" form-group m-1" formArrayName="Stocks"
+                            *ngFor="let size of productService.PruductForm.get('Stocks')['controls'];let i=index">
+                            <div class="form-row" [formGroupName]="i">
+                                <div class="form-group m-1">
+                                    <select class="form-control"  formControlName="SizeID">
+                                          <option value="" disabled selected>Choose Size</option>
+                                          <option *ngFor="let s of sizes" [ngValue]="s.SizeID">
+                                          {{s.Name}}-{{s.Description}}</option>
+                                    </select>
+                                    <span class="alert-danger" *ngIf="stocks.controls[i].get('SizeID').touched && stocks.controls[i].get('SizeID').errors?.required">Please select size!</span>
+                              </div>
+                                <div class="form-group m-1">
+                                    <input type="text" placeholder="Quantity"
+                                        formControlName="Quantity" class="form-control">
+                                        <span class="alert-danger" *ngIf="stocks.controls[i].get('Quantity').touched && stocks.controls[i].get('Quantity').errors?.required">Please enter quantity!</span>
+                                </div>                            
+                            </div>
+                        </div>
+
+                        <div class="form-group m-1">
+                            
+                            <button type="button"
+                                [disabled]="productService.PruductForm.get('Stocks')['controls'].length===5"
+                                class="btn btn-primary m-1" (click)="addStock()">+ </button>
+                        </div>
+                        <div class="form-group m-1">
+                            
+                            <button type="button"
+                                [disabled]="productService.PruductForm.get('Stocks')['controls'].length===1"
+                                class="btn btn-danger text-white m-1" (click)="deleteStock(productService.PruductForm.get('Stocks')['controls'].length)">- </button>
+                        </div>
+
+
+                </div>
+
+
+
+                <div class="form-row">
+                    <div class="form-group m-1">
+                        <button [disabled]="productService.PruductForm.invalid" class="btn btn-success">Save</button>
                     </div>
                 </div>
 
             </form>
         </div>
-        <div class="col-lg-4" style="border: 1px solid black;">
+        <div class="col-lg-4" style="border: 0px solid black;">
             <div class="row" style="overflow-y: scroll; height:468px;">
                 <div class="col-lg-4" *ngFor="let i of images">
                     <img [src]="i" height="100" width="100">
@@ -72,5 +263,5 @@
             </div>
         </div>
 
-    </div>
+    </div> -->
 </div>

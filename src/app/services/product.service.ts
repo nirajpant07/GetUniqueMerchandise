@@ -6,7 +6,7 @@ import { User } from '../models/User';
 import { Token } from '../models/token';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '../../environments/environment';
-import { Subcategory } from '../models/Subcategory';
+import { Product } from '../models/Product';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,21 @@ export class ProductService {
   baseURL:any=environment.baseUrl;
   PruductForm: FormGroup;
   files: FileList;
+  productList:Product[];
   constructor(private http:HttpClient) 
   { }
+
+  add(product: Product){
+    return this.http.post(this.baseURL+"/api/Product/",product);
+  }
+  getAll(){
+    return this.http.get(this.baseURL+"/api/Product/");
+  }
+  delete(productID:number){
+    return this.http.get(this.baseURL+"/api/Product/DeleteProduct?id="+productID);
+  }
+  update(product: Product)
+  {
+    return this.http.post(this.baseURL+"/api/Product/Update/",product);
+  }
 }

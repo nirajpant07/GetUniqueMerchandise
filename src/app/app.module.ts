@@ -12,6 +12,7 @@ import { SigninComponent } from './signin/signin.component';
 import { BasicService } from './services/basic.service';
 import { CategoryService } from './services/category.service';
 import { SubcategoryService } from './services/subcategory.service';
+import { SizeService } from './services/size.service';
 import { ProductService } from './services/product.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AuthGuard } from '../app/guards/auth.guard';
@@ -53,7 +54,7 @@ export function tokeGetter()
       }
     })
   ],
-  providers: [BasicService,AuthGuard,CategoryService,SubcategoryService,ProductService],
+  providers: [BasicService,AuthGuard,CategoryService,SubcategoryService,ProductService,SizeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

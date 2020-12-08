@@ -14,8 +14,9 @@ export class Product{
     ProductDescription : string;
     UnitPrice : number;
     Color : string;
+    SizeID: number;
     DiscountPercentage : number;
-    Images:FileList;
+    Images:string[];
     ProductImages :ProductImage[];
     Stocks : Stock[];
     constructor ()
@@ -34,6 +35,6 @@ export class Product{
         this.Subcategory=null;
         this.ProductImages=[];
         this.Stocks=[];
-        this.Images=null;
+        this.Images=[];
     }
 }
