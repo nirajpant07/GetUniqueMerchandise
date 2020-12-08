@@ -100,10 +100,10 @@ export class AddproductComponent implements OnInit {
         this.cd.markForCheck();
       }       
     }
-    if(this.images[0]==this.images[1]){
-      console.log("Same");
-    }
-    console.log(this.images);
+    // if(this.images[0]==this.images[1]){
+    //   console.log("Same");
+    // }
+    // console.log(this.images);
   }
 
 }
