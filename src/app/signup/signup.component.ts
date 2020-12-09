@@ -42,16 +42,12 @@ export class SignupComponent implements OnInit {
       (res)=>{
         console.log(res);
         if((<any>res).Saved=="True"){
-          this.showToast("Please Login","Signup Successful");
+          this.toastr.success("Please Login","Signup Successful");
           this.router.navigateByUrl("/signin");
         }
         else
-        this.showToast("Problem Occurred","Signup Failed");
+        this.toastr.error("Problem Occurred","Signup Failed");
       }
     );
-  }
-
-  showToast(message:string,title:string){
-    this.toastr.show(message,title)
   }
 }
