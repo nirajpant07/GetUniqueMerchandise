@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BasicService } from '../services/basic.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-signin',
@@ -16,7 +17,8 @@ export class SigninComponent implements OnInit {
     public basicService: BasicService,
     private fb: FormBuilder,
     private router: Router,
-    private jwthelper: JwtHelperService) { }
+    private jwthelper: JwtHelperService,
+    private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.isUserAuthenticated();
@@ -43,8 +45,16 @@ export class SigninComponent implements OnInit {
         console.log(res);
         const token=(<any>res).Token;
         localStorage.setItem("jwt",token);
-        if(this.basicService.getUserRole() === "Admin")
+        this.basicService.Token=this.jwthelper.decodeToken(localStorage.getItem("jwt"));
+        this.toastr.success("Logged in successfully!");
+        if(this.basicService.getUserRole() === "Admin"){
           this.router.navigateByUrl("/admin");
+        }         
+        else if(this.basicService.getUserRole() === "Customer")   
+        {
+          this.router.navigateByUrl("/home");   
+        }  
+          
       }
     );
   }

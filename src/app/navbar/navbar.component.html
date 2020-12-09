@@ -11,7 +11,7 @@
                 <div class="forms ml-auto">
                     <a *ngIf="basicService.isLoggedIn()" routerLink="/signin" class="btn"><span class="fa fa-user-circle-o"></span> Sign In</a>
                     <a *ngIf="basicService.isLoggedIn()" routerLink="/signup" class="btn"><span class="fa fa-pencil-square-o"></span> Sign Up</a>
-                    <a *ngIf="!basicService.isLoggedIn()" class="btn"><span class="fa fa-user-circle-o"></span>Admin</a>
+                    <a *ngIf="!basicService.isLoggedIn()" class="btn"><span class="fa fa-user-circle-o"></span>{{basicService.Token.Email}}</a>
                     <a *ngIf="!basicService.isLoggedIn()" (click)="basicService.logout()" class="btn"><span class="fa fa-sign-out"></span>Logout</a>
 
                 </div>

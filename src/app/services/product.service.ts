@@ -14,9 +14,11 @@ import { Product } from '../models/Product';
 export class ProductService {
 
   baseURL:any=environment.baseUrl;
-  PruductForm: FormGroup;
+  ProductForm: FormGroup;
   files: FileList;
   productList:Product[];
+  ImageForm:FormGroup;
+  StockForm:FormGroup;
   constructor(private http:HttpClient) 
   { }
 
@@ -32,5 +34,17 @@ export class ProductService {
   update(product: Product)
   {
     return this.http.post(this.baseURL+"/api/Product/Update/",product);
+  }
+  getImages(productID:number)
+  {
+    return this.http.get(this.baseURL+"/api/Product/GetImages?id="+productID);
+  }
+  addImage(products:Product)
+  {
+    return this.http.post(this.baseURL+"/api/Product/PostAddImages/",products);
+  }
+  deleteImage(productImageID:number)
+  {
+    return this.http.get(this.baseURL+"/api/Product/GetDeleteImage?id="+productImageID);
   }
 }

@@ -10,6 +10,7 @@ import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 import { SizeService } from 'src/app/services/size.service';
 import { SubcategoryService } from 'src/app/services/subcategory.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-addproduct',
@@ -33,7 +34,8 @@ export class AddproductComponent implements OnInit {
   private subcategoryService:SubcategoryService,
   private router: Router,
   private cd:ChangeDetectorRef,
-  private sizeService: SizeService) { }
+  private sizeService: SizeService,
+  private toastr:ToastrService) { }
 
   ngOnInit(): void 
   {
@@ -47,21 +49,21 @@ export class AddproductComponent implements OnInit {
     this.sizeArray=new Array();
   }
   
-  get CategoryID(){   return this.productService.PruductForm.get('CategoryID');  }
-  get SubcategoryID(){   return this.productService.PruductForm.get('SubcategoryID');  }
-  get ProductName(){   return this.productService.PruductForm.get('ProductName');  }
-  get ProductDescription(){   return this.productService.PruductForm.get('ProductDescription');  }
-  get Files(){   return this.productService.PruductForm.get('Files');  }
-  get Color(){   return this.productService.PruductForm.get('Color');  }
-  get UnitPrice(){   return this.productService.PruductForm.get('UnitPrice');  }
-  get DiscountPercentage(){   return this.productService.PruductForm.get('DiscountPercentage');  }
-  get SizeID(){   return this.productService.PruductForm.get('SizeID');  }
-  get Quantity(){   return this.productService.PruductForm.get('Quantity');  }
-  get stocks(): FormArray { return this.productService.PruductForm.get('Stocks') as FormArray; } 
+  get CategoryID(){   return this.productService.ProductForm.get('CategoryID');  }
+  get SubcategoryID(){   return this.productService.ProductForm.get('SubcategoryID');  }
+  get ProductName(){   return this.productService.ProductForm.get('ProductName');  }
+  get ProductDescription(){   return this.productService.ProductForm.get('ProductDescription');  }
+  get Files(){   return this.productService.ProductForm.get('Files');  }
+  get Color(){   return this.productService.ProductForm.get('Color');  }
+  get UnitPrice(){   return this.productService.ProductForm.get('UnitPrice');  }
+  get DiscountPercentage(){   return this.productService.ProductForm.get('DiscountPercentage');  }
+  get SizeID(){   return this.productService.ProductForm.get('SizeID');  }
+  get Quantity(){   return this.productService.ProductForm.get('Quantity');  }
+  get stocks(): FormArray { return this.productService.ProductForm.get('Stocks') as FormArray; } 
 
 
   createForm(){
-    this.productService.PruductForm=this.fb.group({
+    this.productService.ProductForm=this.fb.group({
       ProductID : [""],
       ProductName: ["",Validators.required],
       ProductDescription: ["",Validators.required],
@@ -85,7 +87,7 @@ export class AddproductComponent implements OnInit {
   }
   addStock() 
   {
-    this.Stocks = this.productService.PruductForm.get('Stocks') as FormArray;
+    this.Stocks = this.productService.ProductForm.get('Stocks') as FormArray;
     this.Stocks.push(this.createStock());
     console.log(this.stocks);
   }
@@ -93,7 +95,7 @@ export class AddproductComponent implements OnInit {
   deleteStock(length:number)
   {
     console.log(length);
-    this.Stocks = this.productService.PruductForm.get('Stocks') as FormArray;
+    this.Stocks = this.productService.ProductForm.get('Stocks') as FormArray;
     this.Stocks.removeAt(length-1);
   }
 
@@ -130,10 +132,12 @@ export class AddproductComponent implements OnInit {
   }
   onSubmit()
   {
-    console.log(this.productService.PruductForm.value);
-    this.productService.add(this.productService.PruductForm.value).subscribe(
+    console.log(this.productService.ProductForm.value);
+    this.productService.add(this.productService.ProductForm.value).subscribe(
       (data:any)=>{
         console.log("Success!");
+        this.toastr.success("Product Added Successfully");
+        this.router.navigateByUrl("/products");
       },
       (err:any)=>{
         console.log("Error!");
@@ -155,7 +159,7 @@ export class AddproductComponent implements OnInit {
         this.cd.markForCheck();
       }       
     }
-    this.productService.PruductForm.patchValue({
+    this.productService.ProductForm.patchValue({
       Images : this.images
     });
   }
@@ -172,18 +176,18 @@ export class AddproductComponent implements OnInit {
 
   onCategoryChange(event:any){
     
-    let categoryID=event.target['options']
+    let categoryName=event.target['options']
     [event.target['options'].selectedIndex].text;
-    console.log(categoryID);
+    //console.log(categoryName);
     this.subcategories=this.subcategoryService.subcategoryList.filter(res=>{
-     let x= res.CategoryName.toLowerCase().match(categoryID.toLowerCase());
+     let x= res.CategoryName.toLowerCase() == (categoryName.toLowerCase());
      if(x==null){
        this.subcategories=null;
      }
      return x;
     });
-    console.log(this.subcategoryService.subcategoryList);
-    console.log(this.subcategories);
+    //console.log(this.subcategoryService.subcategoryList);
+    //console.log(this.subcategories);
   }
 
   onSizeSelect(event:any){   

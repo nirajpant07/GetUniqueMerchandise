@@ -3,4 +3,5 @@ export class Token {
     aud: string;
     exp: string;
     iss : string;
+    Email: string;
 }

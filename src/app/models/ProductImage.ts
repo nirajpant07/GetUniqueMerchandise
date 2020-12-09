@@ -2,12 +2,12 @@ export class ProductImage
 {
         ProductImageID :number;
         Image :string;
-        ProductID :File;
+        ProductID :number;
 
         constructor()
         {
             this.ProductImageID=0;
             this.Image="";
-            this.ProductID=null;
+            this.ProductID=0;
         }
 }

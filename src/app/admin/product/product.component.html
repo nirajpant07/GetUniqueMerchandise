@@ -34,8 +34,8 @@
                             <td>{{p.ProductDescription}}</td>
                             <td>{{p.CategoryName}}-{{p.SubcategoryName}}</td>
                             <!-- <td><img class="img-responsive" style="height: 7em;width:11em;" src="{{p.ProductImages[0].Image}}" alt="{{p.ProductName}}"></td> -->
-                            <td><a href="" data-toggle="modal" data-target="#exampleModalCenter">Manage</a></td>
-                            <td><a href="">Manage</a></td>
+                            <td><button data-toggle="modal" (click)="populateSize()" data-target="#StockModal">Manage</button></td>
+                            <td><button data-toggle="modal" (click)="populateImages(p)" data-target="#ImageModal">Manage</button></td>
                             <td>{{p.UnitPrice}}</td>
                             <td>{{p.DiscountPercentage}} %</td>
                             <td>{{p.Color}}</td>
@@ -46,23 +46,128 @@
                 </div>
         </div>
     </div>
+
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" (focusout)="modalFocusOut()" id="ImageModal" tabindex="-1" role="dialog" aria-labelledby="ImageModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <h5 class="modal-title" >Manage Images of {{product.ProductName}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <div class="row p-1 ">
+          <div class="col-lg-12">
+            <form [formGroup]="productService.ImageForm" (ngSubmit)="onSubmit()">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for=""><strong>Add More Images  </strong>  </label>    
+                  <input class="form-control-file" type="file" formControlName="Files" (change)="onImageSelected($event)" multiple>
+                    <span class="alert-danger" *ngIf="Files.touched && Files.errors?.required">Please select atleast 1 image!</span>           
+                  
+                  </div>
+                <div class="form-group ">
+                  <button [disabled]="productService.ImageForm.invalid" class="btn btn-primary mt-4">ADD</button>
+                </div>
+                
+              </div>
+
+            </form>
+            <span style="color: red;">NOTE: Avoid clicking outside the Manage Image Window!</span>
+          </div>         
+        </div>
+        <hr>
+        <div class="col-lg-12" style="border:0px solid black;">
+          <p class="h2" style="text-align: center;">{{title}}</p>
+          <div *ngIf="title =='Image Preview'" class="row" style="overflow-y: scroll; height:370px;">
+             
+            <div class="show-image m-4 p-0 " style="border: 0px solid black;" *ngFor="let i of images">
+              
+                <img class="img-thumbnail" [src]="i" height="200" width="200" style="border:0px solid black;">
+                
+            </div>
+            
+        </div>
+          <div *ngIf="title !='Image Preview'" class="row" style="overflow-y: scroll; height:370px;">
+             
+              <div class="show-image m-3 p-0 " style="border: 1px solid black;" *ngFor="let i of productImages">
+                
+                  <img class="img-thumbnail" [src]="i.Image" height="200" width="200" style="border:0px solid black;">
+                  <button  (click)="deleteImage(i)" style="border-radius: 40px;color:white;background-color: #f3441d;font-weight: 30px;" class="delete" type="button"  ><i class="fa fa-times"></i></button>
+              </div>
+              
+          </div>
       </div>
-      <div class="modal-footer">
+      </div>
+      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade"  id="StockModal" tabindex="-1" role="dialog" aria-labelledby="ImageModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Manage Stocks</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
+      <div class="modal-body">
+
+        <form [formGroup]="productService.StockForm">
+          <strong>Select Sizes :</strong>
+          <div class="form-row ">
+                <div class=" form-group m-1" formArrayName="Stocks"
+                    *ngFor="let size of productService.StockForm.get('Stocks')['controls'];let i=index">
+                    <div class="form-row" [formGroupName]="i">
+                        <div class="form-group m-1">
+                            <select class="form-control"  (change)="onSizeSelect($event)" formControlName="SizeID">
+                                  <option value="" disabled selected>Choose Size</option>
+                                  
+                                    <option *ngFor="let s of sizes" [disabled]="s.Selected == true" [ngValue]="s.SizeID">
+                                        {{s.Name}}</option>
+                                 
+                                  
+                            </select>
+                            <span class="alert-danger" *ngIf="stocks.controls[i].get('SizeID').touched && stocks.controls[i].get('SizeID').errors?.required">Please select size!</span>
+                      </div>
+                        <div class="form-group m-1">
+                            <input type="text" style="width: 120px;" placeholder="Quantity"
+                                formControlName="Quantity" class="form-control">
+                                <span class="alert-danger" *ngIf="stocks.controls[i].get('Quantity').touched && stocks.controls[i].get('Quantity').errors?.required">Please enter quantity!</span>
+                        </div> 
+                        <div *ngIf="productService.StockForm.get('Stocks')['controls'].length!=1">
+                            <a (click)="deleteSize(i)" *ngIf="(productService.StockForm.get('Stocks')['controls'].length-1)!=i"><i style="color:red;font-size:x-large" class="fa fa-window-close m-2" aria-hidden="true"></i></a>   
+                        </div>
+                                                
+                    </div>
+                </div>
+
+                <div class="form-group m-1">
+                    
+                    <button type="button"
+                        [disabled]="productService.StockForm.get('Stocks')['controls'].length===5"
+                        class="btn btn-primary m-1" (click)="addStock()">+ </button>                           
+                    <button type="button"
+                        [disabled]="productService.StockForm.get('Stocks')['controls'].length===1"
+                        class="btn btn-danger text-white m-1" (click)="deleteStock(productService.StockForm.get('Stocks')['controls'].length)">- </button>
+                </div>
+                
+          </div>
+        </form>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
     </div>
   </div>
 </div>

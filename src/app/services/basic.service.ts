@@ -13,6 +13,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class BasicService {
+  Token :Token;
   //signin variable 
   signinForm: FormGroup;
   //signup variable
@@ -27,10 +28,11 @@ export class BasicService {
   }
 
   signupUser(userData:User){
-    return this.http.post("https://localhost:44388/api/Authentication/Signup/",userData);
+    return this.http.post(this.baseURL+"/api/Auth/Signup/",userData);
   }
   public logout() {
     localStorage.removeItem("jwt");
+    this.Token=null;
     this.router.navigateByUrl("/home");
   }
   getDetails() {

@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     //this.router.navigateByUrl("/home");
     //this.isUserAuthenticated();
-    console.log(this.basicSevice.getUserRole());
+    //console.log(this.basicSevice.getUserRole());
   }
 
   // isUserAuthenticated()
