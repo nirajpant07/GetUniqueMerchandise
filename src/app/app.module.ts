@@ -23,6 +23,7 @@ import { CategoryComponent } from './admin/category/category.component';
 import { SubcategoryComponent } from './admin/subcategory/subcategory.component';
 import { ProductComponent } from './admin/product/product.component';
 import { AddproductComponent } from './admin/product/addproduct/addproduct.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 export function tokeGetter()
 {
@@ -50,6 +51,7 @@ export function tokeGetter()
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     ReactiveFormsModule,
+    Ng2SearchPipeModule,
     JwtModule.forRoot({
       config : {
         tokenGetter : tokeGetter,

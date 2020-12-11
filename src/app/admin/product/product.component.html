@@ -5,10 +5,10 @@
         
         <div class="col-lg-12 col-md-10 col-sm-4 " >
                 <div class="table-responsive" style="overflow-y: scroll; height:427px;">
-                    <table class="table  table-hover" >
+                    <table class="table  table-hover table-striped" >
                         <thead>
                             <tr>
-                                <th colspan="3"><input style="width:15em;" class="form-control"  type="text" placeholder="Search here"></th>
+                                <th colspan="3"><input [(ngModel)]="keyword" style="width:15em;" class="form-control"  type="text" placeholder="Search here"></th>
                                 <th colspan="3" >
                                     <button  (click)="addProduct()" class="btn btn-primary" >ADD PRODUCT</button>
                                 </th>
@@ -28,18 +28,18 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let p of products; let i =index">
+                          <tr *ngFor="let p of products | filter : keyword; let i =index">
                             <td>{{i+1}}</td>
                             <td>{{p.ProductName}}</td>
                             <td>{{p.ProductDescription}}</td>
                             <td>{{p.CategoryName}}-{{p.SubcategoryName}}</td>
                             <!-- <td><img class="img-responsive" style="height: 7em;width:11em;" src="{{p.ProductImages[0].Image}}" alt="{{p.ProductName}}"></td> -->
-                            <td><button data-toggle="modal" (click)="populateSize()" data-target="#StockModal">Manage</button></td>
-                            <td><button data-toggle="modal" (click)="populateImages(p)" data-target="#ImageModal">Manage</button></td>
+                            <td><button class="btn btn-info" id="stockBtn" data-toggle="modal" (click)="populateSize(p)" data-target="#StockModal" data-backdrop="static" data-keyboard="false">Manage</button></td>
+                            <td><button class="btn btn-info" data-toggle="modal" (click)="populateImages(p)" data-target="#ImageModal" data-backdrop="static" data-keyboard="false">Manage</button></td>
                             <td>{{p.UnitPrice}}</td>
                             <td>{{p.DiscountPercentage}} %</td>
                             <td>{{p.Color}}</td>
-                            <td><a href="">Manage</a></td>
+                            <td><button class="btn btn-info">Manage</button></td>
                           </tr>                       
                         </tbody>
                       </table>
@@ -47,8 +47,8 @@
         </div>
     </div>
 
-<!-- Modal -->
-<div class="modal fade" (focusout)="modalFocusOut()" id="ImageModal" tabindex="-1" role="dialog" aria-labelledby="ImageModal" aria-hidden="true">
+<!-- ImageModal -->
+<div class="modal fade" (focusout)="imageModalFocusOut()" id="ImageModal" tabindex="-1" role="dialog" aria-labelledby="ImageModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -60,7 +60,7 @@
       <div class="modal-body">
         <div class="row p-1 ">
           <div class="col-lg-12">
-            <form [formGroup]="productService.ImageForm" (ngSubmit)="onSubmit()">
+            <form [formGroup]="productService.ImageForm" (ngSubmit)="onImageSubmit()">
               <div class="form-row">
                 <div class="form-group">
                   <label for=""><strong>Add More Images  </strong>  </label>    
@@ -75,7 +75,7 @@
               </div>
 
             </form>
-            <span style="color: red;">NOTE: Avoid clicking outside the Manage Image Window!</span>
+           
           </div>         
         </div>
         <hr>
@@ -110,59 +110,72 @@
 </div>
 
 
-<!-- Modal -->
-<div class="modal fade"  id="StockModal" tabindex="-1" role="dialog" aria-labelledby="ImageModal" aria-hidden="true">
+<!-- StockModal -->
+<div class="modal fade"  id="StockModal" tabindex="-1" role="dialog" aria-labelledby="StockModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Manage Stocks</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-8 offset-lg-3">
+            <form [formGroup]="productService.StockForm" (ngSubmit)="onSubmitStocks()">
+              <strong>Select Sizes :</strong>
+              <div class="form-row ">
+                    <div class=" form-group m-1" formArrayName="Stocks"
+                        *ngFor="let size of productService.StockForm.get('Stocks')['controls'];let i=index">
+                        <div class="form-row" [formGroupName]="i">
+                            <div class="form-group m-1">
+                                <select class="form-control" (change)="onSizeSelect($event)" (click)="getLastSelectSize($event)"  formControlName="SizeID">
+                                      <option value="" disabled selected>Choose Size</option>
+                                      
+                                        <option *ngFor="let s of sizes" [disabled]="s.Selected" [ngValue]="s.SizeID">
+                                            {{s.Name}} </option>
 
-        <form [formGroup]="productService.StockForm">
-          <strong>Select Sizes :</strong>
-          <div class="form-row ">
-                <div class=" form-group m-1" formArrayName="Stocks"
-                    *ngFor="let size of productService.StockForm.get('Stocks')['controls'];let i=index">
-                    <div class="form-row" [formGroupName]="i">
-                        <div class="form-group m-1">
-                            <select class="form-control"  (change)="onSizeSelect($event)" formControlName="SizeID">
-                                  <option value="" disabled selected>Choose Size</option>
-                                  
-                                    <option *ngFor="let s of sizes" [disabled]="s.Selected == true" [ngValue]="s.SizeID">
-                                        {{s.Name}}</option>
-                                 
-                                  
-                            </select>
-                            <span class="alert-danger" *ngIf="stocks.controls[i].get('SizeID').touched && stocks.controls[i].get('SizeID').errors?.required">Please select size!</span>
-                      </div>
-                        <div class="form-group m-1">
-                            <input type="text" style="width: 120px;" placeholder="Quantity"
-                                formControlName="Quantity" class="form-control">
-                                <span class="alert-danger" *ngIf="stocks.controls[i].get('Quantity').touched && stocks.controls[i].get('Quantity').errors?.required">Please enter quantity!</span>
-                        </div> 
-                        <div *ngIf="productService.StockForm.get('Stocks')['controls'].length!=1">
-                            <a (click)="deleteSize(i)" *ngIf="(productService.StockForm.get('Stocks')['controls'].length-1)!=i"><i style="color:red;font-size:x-large" class="fa fa-window-close m-2" aria-hidden="true"></i></a>   
+                                      
+                                     
+                                      
+                                </select>
+                                <span class="alert-danger" *ngIf="stocks.controls[i].get('SizeID').touched && stocks.controls[i].get('SizeID').errors?.required">Please select size!</span>
+                              
+                          </div>
+                            <div class="form-group m-1">
+                                <input type="number" style="width: 120px;" placeholder="Quantity"
+                                    formControlName="Quantity" class="form-control">
+                                    <span class="alert-danger" *ngIf="stocks.controls[i].get('Quantity').touched && stocks.controls[i].get('Quantity').errors?.required">Please enter quantity!</span>
+                            </div> 
+                            <div *ngIf="productService.StockForm.get('Stocks')['controls'].length!=1">
+                                <a (click)="deleteSize(i)" *ngIf="(productService.StockForm.get('Stocks')['controls'].length-1)!=i"><i style="color:red;font-size:x-large" class="fa fa-window-close m-2" aria-hidden="true"></i></a>   
+                            </div>
+                                                    
                         </div>
-                                                
                     </div>
-                </div>
-
-                <div class="form-group m-1">
+    
+                    <div class="form-group m-1">
+                        
+                        <button type="button"
+                            [disabled]="productService.StockForm.get('Stocks')['controls'].length===5&&plusBtn"
+                            class="btn btn-primary m-1" (click)="addStock()">+ </button>                           
+                        <button type="button"
+                            [disabled]="productService.StockForm.get('Stocks')['controls'].length===1"
+                            class="btn btn-danger text-white m-1" (click)="deleteStock(productService.StockForm.get('Stocks')['controls'].length)">- </button>
+                    </div>
                     
-                    <button type="button"
-                        [disabled]="productService.StockForm.get('Stocks')['controls'].length===5"
-                        class="btn btn-primary m-1" (click)="addStock()">+ </button>                           
-                    <button type="button"
-                        [disabled]="productService.StockForm.get('Stocks')['controls'].length===1"
-                        class="btn btn-danger text-white m-1" (click)="deleteStock(productService.StockForm.get('Stocks')['controls'].length)">- </button>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                    <button class="btn btn-primary">Update</button>
                 </div>
-                
+              </div>
+            </form>
           </div>
-        </form>
+
+        </div>
+
       </div>
       <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -89,8 +89,8 @@
 
                         <div class="form-group m-1">
                             
-                            <button type="button"
-                                [disabled]="productService.ProductForm.get('Stocks')['controls'].length===5"
+                            <button  type="button"
+                                [disabled]="plusBtn"
                                 class="btn btn-primary m-1" (click)="addStock()">+ </button>                           
                             <button type="button"
                                 [disabled]="productService.ProductForm.get('Stocks')['controls'].length===1"

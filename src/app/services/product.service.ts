@@ -19,6 +19,7 @@ export class ProductService {
   productList:Product[];
   ImageForm:FormGroup;
   StockForm:FormGroup;
+  StockArray=new Array();
   constructor(private http:HttpClient) 
   { }
 
@@ -46,5 +47,13 @@ export class ProductService {
   deleteImage(productImageID:number)
   {
     return this.http.get(this.baseURL+"/api/Product/GetDeleteImage?id="+productImageID);
+  }
+  getStocks(productID:number)
+  {
+    return this.http.get(this.baseURL+"/api/Product/GetStocks?id="+productID);
+  }
+  manageStock(product:Product)
+  {
+    return this.http.post(this.baseURL+"/api/Product/PostManageStock",product);
   }
 }

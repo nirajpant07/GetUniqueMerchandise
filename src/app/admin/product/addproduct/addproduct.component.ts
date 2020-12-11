@@ -11,6 +11,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { SizeService } from 'src/app/services/size.service';
 import { SubcategoryService } from 'src/app/services/subcategory.service';
 import { ToastrService } from 'ngx-toastr';
+import { Stock } from 'src/app/models/Stock';
 
 @Component({
   selector: 'app-addproduct',
@@ -26,6 +27,7 @@ export class AddproductComponent implements OnInit {
   sizes: Size[];
   Stocks:FormArray;
   sizeArray:string[];
+  plusBtn:boolean=true;
 
   constructor(
   public productService: ProductService,
@@ -82,21 +84,34 @@ export class AddproductComponent implements OnInit {
     return this.fb.group(
       {
         SizeID: ["",Validators.required],
-        Quantity: ["",Validators.required]
+        Quantity: ["",Validators.required],
       });
   }
   addStock() 
   {
-    this.Stocks = this.productService.ProductForm.get('Stocks') as FormArray;
-    this.Stocks.push(this.createStock());
-    console.log(this.stocks);
+    let stock=this.productService.ProductForm.get('Stocks') as FormArray;
+    let stockArr:Stock[]=stock.value;
+    if(stockArr[stockArr.length-1].SizeID.toString()!=""){
+      this.sizes.forEach(function (s) {
+        //console.log(s);
+         if(s.SizeID==stockArr[stock.length-1].SizeID)
+         {
+            s.Selected=true;                   
+          }               
+      });
+      this.Stocks = stock;
+      this.Stocks.push(this.createStock());
+    }
+
+    //console.log(this.stocks);
   }
 
   deleteStock(length:number)
   {
-    console.log(length);
-    this.Stocks = this.productService.ProductForm.get('Stocks') as FormArray;
-    this.Stocks.removeAt(length-1);
+    //console.log(length);
+    //this.Stocks = this.productService.ProductForm.get('Stocks') as FormArray;
+    //this.Stocks.removeAt(length-1);   
+    this.deleteSize(length-1);
   }
 
 
@@ -163,6 +178,7 @@ export class AddproductComponent implements OnInit {
       Images : this.images
     });
   }
+
   getSizeList(){
     this.sizeService.getAll().subscribe(
       (data:any)=>{
@@ -191,17 +207,28 @@ export class AddproductComponent implements OnInit {
   }
 
   onSizeSelect(event:any){   
-    this.sizeArray.push(event.target['options']
-    [event.target['options'].selectedIndex].text);
-    
-    this.sizes[event.target['options'].selectedIndex-1].Selected=true;
+    //this.sizeArray.push(event.target['options'][event.target['options'].selectedIndex].text);  
+
+    if(event.target['options'][event.target['options'].selectedIndex]!=0)
+    {
+        //console.log(event.target['options'].selectedIndex);
+        this.plusBtn=false;
+    }
+
+
+    //this.sizes[event.target['options'].selectedIndex-1].Selected=true;
     //console.log(this.sizes);
   }
 
   deleteSize(i:number){
-    //console.log(this.stocks);
+    let stock:Stock=this.productService.ProductForm.controls["Stocks"].value;
     this.stocks.removeAt(i);
-    this.sizes[i].Selected=false;
+    this.sizes.forEach(function (s) {
+       if(s.SizeID==stock[i].SizeID)
+       {
+          s.Selected=false;
+       }         
+    });    
   }
 
 }

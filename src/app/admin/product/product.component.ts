@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -8,12 +9,14 @@ import { Size } from 'src/app/models/Size';
 import { Stock } from 'src/app/models/Stock';
 import { ProductService } from 'src/app/services/product.service';
 import { SizeService } from 'src/app/services/size.service';
-
+import {ToastrService} from "ngx-toastr"
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css']
 })
+
 export class ProductComponent implements OnInit {
 
 
@@ -25,7 +28,11 @@ export class ProductComponent implements OnInit {
   title:string="Image From Repository";
   sizes: Size[];
   Stocks:FormArray;
+  StockArray:Stock[];
   sizeArray:string[];
+  plusBtn:boolean=true;
+  keyword:string;
+  selectedIndex:number=0;
 
   constructor
   (
@@ -33,16 +40,19 @@ export class ProductComponent implements OnInit {
     public productService: ProductService,
     private cd : ChangeDetectorRef,
     private fb:FormBuilder,
-    public sizeService:SizeService
+    public sizeService:SizeService,
+    private toastr : ToastrService
   ) {
     this.product=new Product();
+    this.StockArray=new Array();
+    this.sizeArray=new Array();
+    
    }
-
+   
   ngOnInit(): void {
     this.getAll();
     this.createImageForm();
     this.createStockForm();
-
   }
 
   get Files(){   return this.productService.ImageForm.get('Files');  }
@@ -51,20 +61,46 @@ export class ProductComponent implements OnInit {
   addProduct(){
     this.router.navigateByUrl("/add-product");
   }
+
   getSizeList(){
     this.sizeService.getAll().subscribe(
-      (data:any)=>{
-        this.sizes=data;
+      (data:any)=>
+      {
+        this.sizes=data;   
+        //console.log(this.sizes);    
       },
-      (err:any)=>{
-        console.log("Error!");
+      (err:any)=>
+      {
+        this.toastr.error("Couldn't Fetch Size List","Error");
       }
     );
   }
 
-  populateSize(){
+  populateSize(p:Product){
+    //console.log(p);
+    this.createStockForm();
     this.getSizeList();
+    this.productService.StockForm.controls['ProductID'].setValue(p.ProductID); 
+    this.productService.getStocks(p.ProductID).subscribe(
+      (data :any)=>
+    {
+      this.addOption(data); 
+      this.StockArray=data;
+      this.productService.StockArray=data;
+      //console.log(data);
+    },
+    (err:any)=>
+    {
+      this.toastr.error("Couldn't Fetch Stocks","Error");
+    }
+    );       
+      
+    //console.log(this.StockArray);
+    //console.log(this.productService.StockArray);
+    //
+   // document.getElementById("stockBtn").setAttribute("data-backdrop","true");
   }
+
   getAll()
   {
     this.productService.getAll().subscribe(
@@ -84,37 +120,102 @@ export class ProductComponent implements OnInit {
     this.productService.getImages(product.ProductID).subscribe(
       (data:any)=>{
         this.productImages=data;
-        console.log(data);
+        //console.log(data);
       }
     );
+
     this.productService.ImageForm.controls["ProductID"].setValue(this.product.ProductID);
   }
 
   createStockForm(){
     this.productService.StockForm=this.fb.group({
       ProductID : [""],
-      Stocks : this.fb.array([this.createStock()],[Validators.required])
+      Stocks : this.fb.array([])
     });
   }
+
   createStock(): FormGroup {
     return this.fb.group(
       {
         SizeID: ["",Validators.required],
-        Quantity: ["",Validators.required]
+        Quantity: [0,Validators.required],
+        StockID :[0]
       });
   }
+
   addStock() 
   {
-    this.Stocks = this.productService.StockForm.get('Stocks') as FormArray;
+    let stock=this.productService.StockForm.get('Stocks') as FormArray;
+    let stockArr:Stock[]=stock.value;
+    if(stockArr[stockArr.length-1].SizeID.toString()!=""){
+    this.sizes.forEach(function (s) {
+      //console.log(s);
+       if(s.SizeID==stockArr[stock.length-1].SizeID)
+       {
+          s.Selected=true;                   
+       }               
+    });
+    this.Stocks = stock;
     this.Stocks.push(this.createStock());
-    //console.log(this.stocks);
+  }
+    //console.log(this.sizes);
   }
 
   deleteStock(length:number)
   {
-    console.log(length);
+    //console.log(length);
+      // this.Stocks = this.productService.StockForm.get('Stocks') as FormArray;
+      // this.Stocks.removeAt(length-1);
+      this.deleteSize(length-1);
+  }
+
+  createOption(stock:Stock): FormGroup {
+    return this.fb.group(
+      {
+        SizeID: [stock.SizeID,Validators.required],
+        Quantity: [stock.Quantity,Validators.required],
+        StockID : [stock.StockID]
+      });
+  }
+
+  addOption(stocks:Stock[]) { 
     this.Stocks = this.productService.StockForm.get('Stocks') as FormArray;
-    this.Stocks.removeAt(length-1);
+    //console.log(stocks);
+    this.StockArray=stocks;
+    //console.log(this.StockArray);
+    for(var i=0;i<stocks.length;i++)
+    {
+      for(var j=0;j<this.sizes.length;j++){
+        if(stocks[i].SizeID == this.sizes[j].SizeID)
+        {
+          this.sizes[j].Selected=true;
+          break;
+        }
+      }
+
+      // if(options[i].Answer==1)
+      //   this.isSelected=i+1;
+      //console.log(stocks[i]);
+      this.Stocks.push(this.createOption(stocks[i]));
+    } 
+  }
+
+  onSubmitStocks()
+  {
+    console.log(this.productService.StockForm.value);
+    this.productService.manageStock(this.productService.StockForm.value).subscribe(
+      (data:any)=>{
+        //console.log("updated!");
+        
+        this.toastr.success("Stock updated!","Success");
+        
+        document.getElementById("close").click();
+        //document.getElementById("stockBtn").removeAttribute("data-backdrop");
+        //$("#StockModal").modal("hide");
+      }
+    );
+    //to be continued..
+
   }
 
   createImageForm(){
@@ -124,6 +225,7 @@ export class ProductComponent implements OnInit {
       ProductID: [""]
     });
   }
+
   onImageSelected(event:any)
   {
     let length=event.target.files.length;
@@ -143,7 +245,8 @@ export class ProductComponent implements OnInit {
     });
     this.title="Image Preview";
   }
-  onSubmit()
+
+  onImageSubmit()
   {
       //console.log(this.productService.ImageForm.value);
       let pr:Product=this.productService.ImageForm.value;
@@ -154,20 +257,24 @@ export class ProductComponent implements OnInit {
           //console.log("Saved");
           this.createImageForm();
           this.title="Image From Repository";
+          this.toastr.success("Images Added!","Success");
         }
       );
   }
-  modalFocusOut(){
+
+  imageModalFocusOut(){
     this.title="Image From Repository";
     //this.createImageForm();
     //this.images=null;
   }
+
   deleteImage(i:ProductImage)
   {
     if(confirm('Are you sure want to delete?')){
       this.productService.deleteImage(i.ProductImageID).subscribe(
         (data:any)=>{
           this.productImages=data; 
+          this.toastr.success("Images deleted!","Success");
         }
       );
     }
@@ -175,16 +282,45 @@ export class ProductComponent implements OnInit {
   }
 
   onSizeSelect(event:any){   
-    this.sizeArray.push(event.target['options']
-    [event.target['options'].selectedIndex].text);
-    
-    this.sizes[event.target['options'].selectedIndex-1].Selected=true;
-    //console.log(this.sizes);
+    if(event.target['options'][event.target['options'].selectedIndex]!=0)
+    {
+        this.plusBtn=false;
+    }
+    let stock:Stock=this.productService.StockForm.controls["Stocks"].value;
+    let si=this.selectedIndex;
+    console.log(si);
+    console.log(stock);
+    this.sizes.forEach(function (s) {
+       if(s.SizeID==stock[si-1].SizeID || s.Selected )
+       {
+          s.Selected=false;  
+                      
+      }         
+    });
+  }
+
+  getLastSelectSize(event:any){
+    this.selectedIndex=event.target['options'].selectedIndex;
+    console.log(this.selectedIndex);
   }
 
   deleteSize(i:number){
     //console.log(this.stocks);
+    let stock:Stock=this.productService.StockForm.controls["Stocks"].value;
+    //console.log(stock[i].SizeID);
     this.stocks.removeAt(i);
-    this.sizes[i].Selected=false;
+    //console.log(this.sizes);
+    this.sizes.forEach(function (s) {
+      //console.log(s);
+       if(s.SizeID==stock[i].SizeID)
+       {
+          s.Selected=false;         
+          
+      } 
+               
+    });
+    
+    
   }
+  
 }
