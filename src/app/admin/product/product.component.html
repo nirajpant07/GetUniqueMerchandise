@@ -38,8 +38,9 @@
                             <td><button class="btn btn-info" data-toggle="modal" (click)="populateImages(p)" data-target="#ImageModal" data-backdrop="static" data-keyboard="false">Manage</button></td>
                             <td>{{p.UnitPrice}}</td>
                             <td>{{p.DiscountPercentage}} %</td>
-                            <td>{{p.Color}}</td>
-                            <td><button class="btn btn-info">Manage</button></td>
+                            <td>{{p.Color}} </td>
+                            <!-- <div [style.backgroundColor]="p.Color">ee</div> -->
+                            <td><button class="btn btn-info" data-toggle="modal"  data-target="#DetailsModal" (click)="populateDetails(p)"  data-backdrop="static" data-keyboard="false">Manage</button></td>
                           </tr>                       
                         </tbody>
                       </table>
@@ -184,5 +185,71 @@
     </div>
   </div>
 </div>
+
+
+<!-- Details Update Modal -->
+<div class="modal fade"  id="DetailsModal" tabindex="-1" role="dialog" aria-labelledby="DetailsModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Manage Details of {{product.ProductName}}</h5>
+        <button type="button" id="closeDetailsModal" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-10 offset-lg-2">
+            <form [formGroup]="productService.ProductForm"  (ngSubmit)="onSubmitDetails()">
+        
+              <div class="row " >
+              
+                  <div class="col-lg-10" >
+                      
+                      <div class="form-group m-2">
+                        <span><strong>Product Name :</strong>  </span>
+                          <input placeholder="Name" formControlName="ProductName" class="form-control" type="text">
+                          <span class="alert-danger" *ngIf="ProductName.touched && ProductName.errors?.required">Please enter product name!</span>
+                      </div>
+                      <div class="form-group m-2">
+                        <span><strong> Color :</strong>  </span>
+                          <input placeholder="Color" formControlName="Color" class="form-control" type="text" >
+                          <span class="alert-danger" *ngIf="Color.touched && Color.errors?.required">Please enter color! </span>
+                      </div>
+                      <div class="form-group m-2">
+                        <span><strong>Unit Price :</strong>  </span>
+                          <input placeholder="Unit Price (in Rs.)" formControlName="UnitPrice" class="form-control" type="number" >
+                          <span class="alert-danger" *ngIf="UnitPrice.touched && UnitPrice.errors?.required">Please enter per unit price!</span>
+                      </div>              
+                      <div class="form-group m-2">
+                        <span><strong> Discount :</strong>  </span>
+                          <input placeholder="Discount (%)" formControlName="DiscountPercentage" class="form-control" type="number" >
+                          <span class="alert-danger" *ngIf="DiscountPercentage.touched && DiscountPercentage.errors?.required">Please enter discount in (%) !</span>
+                      </div>
+                      <div class="form-group m-2">
+                        <span><strong> Description :</strong>  </span>
+                          <textarea class="form-control" formControlName="ProductDescription" placeholder="Description" cols="50" rows="4"></textarea>
+                          <span class="alert-danger" *ngIf="ProductDescription.touched && ProductDescription.errors?.required">Please enter product description!</span>
+                      </div>                 
+                      <div class="form-group d-flex justify-content-center m-2">
+                          <button [disabled]="productService.ProductForm.invalid" class=" form-control btn btn-success ">Update</button>
+                      </div>
+                  </div>
+              </div>
+      
+          </form>
+          </div>
+
+        </div>
+
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
 </div>
 

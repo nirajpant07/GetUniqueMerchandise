@@ -53,10 +53,28 @@ export class ProductComponent implements OnInit {
     this.getAll();
     this.createImageForm();
     this.createStockForm();
+    this.createProductDetailForm(new Product());
   }
 
   get Files(){   return this.productService.ImageForm.get('Files');  }
   get stocks(): FormArray { return this.productService.StockForm.get('Stocks') as FormArray; } 
+  get ProductName(){   return this.productService.ProductForm.get('ProductName');  }
+  get ProductDescription(){   return this.productService.ProductForm.get('ProductDescription');  }
+  get Color(){   return this.productService.ProductForm.get('Color');  }
+  get UnitPrice(){   return this.productService.ProductForm.get('UnitPrice');  }
+  get DiscountPercentage(){   return this.productService.ProductForm.get('DiscountPercentage');  }
+
+  createProductDetailForm(p:Product){
+    this.productService.ProductForm=this.fb.group({
+      ProductID : [p.ProductID],
+      ProductName: [p.ProductName,Validators.required],
+      ProductDescription: [p.ProductDescription,Validators.required],
+      Color: [p.Color,Validators.required],
+      UnitPrice : [p.UnitPrice,Validators.required],
+      DiscountPercentage :[p.DiscountPercentage,Validators.required],
+    });
+  }
+
 
   addProduct(){
     this.router.navigateByUrl("/add-product");
@@ -120,11 +138,17 @@ export class ProductComponent implements OnInit {
     this.productService.getImages(product.ProductID).subscribe(
       (data:any)=>{
         this.productImages=data;
-        //console.log(data);
+        console.log(data);
       }
     );
 
     this.productService.ImageForm.controls["ProductID"].setValue(this.product.ProductID);
+  }
+
+  populateDetails(product:Product)
+  {
+    this.createProductDetailForm(product);
+    this.product=product;
   }
 
   createStockForm(){
@@ -217,6 +241,28 @@ export class ProductComponent implements OnInit {
     //to be continued..
 
   }
+
+  onSubmitDetails()
+  {
+    //console.log(this.productService.ProductForm.value);
+    this.productService.manageDetails(this.productService.ProductForm.value).subscribe(
+      (data:any)=>{
+        //console.log(data);
+        this.products=data;
+        this.toastr.success("Details updated!","Success");        
+        document.getElementById("closeDetailsModal").click();
+        //document.getElementById("stockBtn").removeAttribute("data-backdrop");
+        //$("#StockModal").modal("hide");
+      },
+      (err:any)=>{
+        this.toastr.error("Something went wrong!","Error");
+      }
+    );
+    //to be continued..
+
+  }
+
+
 
   createImageForm(){
     this.productService.ImageForm=this.fb.group({

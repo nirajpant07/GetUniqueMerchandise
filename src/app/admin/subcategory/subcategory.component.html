@@ -62,13 +62,13 @@
                                 
                                 <th scope="col">
 
-                                        <input  style="width:15em;" class="form-control" (keyup)="search($event)" type="text" placeholder="Search here">
+                                        <input  style="width:15em;" class="form-control" [(ngModel)]="searchKeyword" type="text" placeholder="Search here">
 
                                 </th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr *ngFor="let s of subcategories; let i =index">
+                              <tr *ngFor="let s of subcategories | filter : searchKeyword ; let i =index">
                                 <th scope="row">{{i+1}}</th>
                                 <td>{{s.SubcategoryName}}</td>
                                 <td>{{s.Description}}</td>

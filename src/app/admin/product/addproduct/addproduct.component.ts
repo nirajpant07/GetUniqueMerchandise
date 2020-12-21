@@ -87,6 +87,7 @@ export class AddproductComponent implements OnInit {
         Quantity: ["",Validators.required],
       });
   }
+
   addStock() 
   {
     let stock=this.productService.ProductForm.get('Stocks') as FormArray;
@@ -145,6 +146,7 @@ export class AddproductComponent implements OnInit {
   {
     this.router.navigateByUrl("/products");
   }
+  
   onSubmit()
   {
     console.log(this.productService.ProductForm.value);
@@ -229,6 +231,12 @@ export class AddproductComponent implements OnInit {
           s.Selected=false;
        }         
     });    
+  }
+  deleteImage(k:number)
+  {
+    if (k > -1) {
+      this.images.splice(k, 1);
+    }
   }
 
 }

@@ -56,4 +56,9 @@ export class ProductService {
   {
     return this.http.post(this.baseURL+"/api/Product/PostManageStock",product);
   }
+  manageDetails(product:Product)
+  {
+    return this.http.post(this.baseURL+"/api/Product/PostUpdateDetails",product);
+  }
+  
 }

@@ -15,7 +15,7 @@ export class CategoryComponent implements OnInit {
   ResultedFile:any=this.defaultImageURL;
   filetoUpload:File;
   categories : Category[];
-  searchKeyword:any;
+  searchKeyword:string;
   constructor(private fb: FormBuilder,public categoryService: CategoryService, private cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -57,6 +57,7 @@ export class CategoryComponent implements OnInit {
   onSubmit()
   {
     let category:Category=this.categoryService.CategoryForm.value;
+    category.Image=this.ResultedFile;
     console.log(category)
     if(category.CategoryID!=0)
     {

@@ -47,12 +47,12 @@
                             <th scope="col">Image</th>
                             <th scope="col">
 
-                                <input style="width:15em;" class="form-control" (keyup)="search($event)" type="text" placeholder="Search here">
+                                <input style="width:15em;" class="form-control" [(ngModel)]="searchKeyword"  type="text" placeholder="Search here">
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr *ngFor="let c of categories; let i =index">
+                          <tr *ngFor="let c of categories | filter : searchKeyword; let i =index">
                             <th scope="row">{{i+1}}</th>
                             <td>{{c.CategoryName}}</td>
                             <td>{{c.Description}}</td>
