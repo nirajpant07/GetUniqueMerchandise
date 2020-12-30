@@ -21,7 +21,6 @@ const routes: Routes = [
   { path: 'subcategory', component: SubcategoryComponent, canActivate : [AuthGuard]},
   { path: 'products', component: ProductComponent, canActivate : [AuthGuard]},
   { path: 'add-product', component: AddproductComponent, canActivate : [AuthGuard]},
-
 ];
 
 @NgModule({
