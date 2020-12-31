@@ -10,7 +10,7 @@ import { BasicService } from '../services/basic.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router :Router,private jwthelper: JwtHelperService,public basicSevice: BasicService) { }
+  constructor(private router :Router,private jwthelper: JwtHelperService,public basicService: BasicService) { }
 
   ngOnInit(): void {
     //this.router.navigateByUrl("/home");

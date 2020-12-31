@@ -1,0 +1,53 @@
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="col-lg-3">
+            <div class="card" style="height:auto">
+                <div class="card-header">
+                    <div class="pull-left">
+                        <h4>Filters</h4>
+                    </div>
+                    <div class="pull-right">
+                         <button (click)="clearFilter()" class="btn-success btn-sm">
+                            Clear
+                         </button> 
+                    </div>
+                </div>
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="card" style="height:100%">
+                <div class="card-header">
+                    <div class="pull-left">
+                        <h4>{{productService.title}}</h4>
+                    </div>
+                    <div class="pull-right">
+                         Total Products  ( {{ productService.products?.length || '0' }} ) 
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row p-4 mb-5">
+                        <div *ngFor="let p of productService.products;let i=index" class="card product-card m-2"
+                            style="width: 15rem;cursor: pointer;">
+                            <div class="img-responsive text-center p-2 show-image" style="width:230px;height: 300px;overflow:hidden;">
+                                <img class="card-img-top" src="{{ baseURL }}{{ p.ProductImages[0].Image}}"
+                                    alt="Card image cap" style="width:100%">
+                                    <i class="fa fa-heart btn cart"></i>
+                            </div>
+
+                            <div class="card card-body m-3">
+                                <h5 class="card-title">{{p.ProductName}}</h5>
+                                <p class="card-text">{{p.ProductDescription}}</p>                               
+                            </div>
+                            <div class="card-footer">
+                                <button href="#" class="btn btn-primary btn-block"><i class="fa fa-shopping-cart "></i> &nbsp; Add To Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,6 +5,7 @@ import { Category } from 'src/app/models/Category';
 import { Subcategory } from 'src/app/models/Subcategory';
 import { CategoryService } from 'src/app/services/category.service';
 import { SubcategoryService } from 'src/app/services/subcategory.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-subcategory',
@@ -12,6 +13,7 @@ import { SubcategoryService } from 'src/app/services/subcategory.service';
   styleUrls: ['./subcategory.component.css']
 })
 export class SubcategoryComponent implements OnInit {
+  baseURL:any=environment.baseUrl;
   defaultImageURL: any ="assets/images/default-image.jpg";
   //imageURL:any=this.defaultImageURL;
   categories:Category[];
@@ -152,7 +154,7 @@ export class SubcategoryComponent implements OnInit {
     this.subcategoryService.SubcategoryForm.controls['SubcategoryName'].setValue(subcategory.SubcategoryName);
     this.subcategoryService.SubcategoryForm.controls['Description'].setValue(subcategory.Description);
     //this.imageURL=subcategory.Image;
-    this.ResultedFile=subcategory.Image;
+    this.ResultedFile=this.baseURL+subcategory.Image;
     //this.categoryService.CategoryForm.controls['Image'].setValue(category.Image);
   }
 

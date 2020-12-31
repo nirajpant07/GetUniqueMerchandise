@@ -20,6 +20,10 @@ export class ProductService {
   ImageForm:FormGroup;
   StockForm:FormGroup;
   StockArray=new Array();
+  //data for UI Product grid 
+  products:any;
+  productBackup:any;
+  title:any;
   constructor(private http:HttpClient) 
   { }
 
@@ -59,6 +63,12 @@ export class ProductService {
   manageDetails(product:Product)
   {
     return this.http.post(this.baseURL+"/api/Product/PostUpdateDetails",product);
+  }
+  getProductsFromCategory(categoryID:number){
+    return this.http.get(this.baseURL+"/api/View/getProductFromCategory?id="+categoryID);
+  }
+  getProductsFromSubcategory(subcategoryID:number){
+    return this.http.get(this.baseURL+"/api/View/getProductFromSubcategory?id="+subcategoryID);
   }
   
 }

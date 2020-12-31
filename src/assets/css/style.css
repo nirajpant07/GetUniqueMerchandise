@@ -204,6 +204,7 @@ nav ul {
 
 /* Positioning the navigation items inline */
 nav ul li {
+
     margin: 0px;
     display: inline-block;
 }
@@ -221,9 +222,9 @@ nav a {
     text-transform: uppercase;
 }
 
-
+/* Background color change on Hover */
 nav ul li ul li:hover {
-    background: #f8f9fa;
+    background: #74d2e7;    
 }
 
 /* Background color change on Hover */
@@ -245,6 +246,7 @@ nav ul ul {
     top: 0px;  /* use to position the dropdown      */
     background: #fff;
     padding: 10px;
+    z-index: 1;
     -moz-box-shadow: 1px 3px 8px 0 rgba(0, 0, 0, 0.15);
     -webkit-box-shadow: 1px 3px 8px 0 rgba(0, 0, 0, 0.15);
     box-shadow: 1px 3px 8px 0 rgba(0, 0, 0, 0.15);
@@ -258,9 +260,11 @@ nav ul li:hover > ul {
 /* Fisrt Tier Dropdown */
 nav ul ul li {
     width: 200px;
+
     float: none;
     display: list-item;
     position: relative;
+    z-index: 1;
 }
 
 nav ul ul li a {
