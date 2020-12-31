@@ -24,6 +24,7 @@ import { SubcategoryComponent } from './admin/subcategory/subcategory.component'
 import { ProductComponent } from './admin/product/product.component';
 import { AddproductComponent } from './admin/product/addproduct/addproduct.component';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { ProductsComponent } from './home/products/products.component';
 
 export function tokeGetter()
 {
@@ -42,6 +43,7 @@ export function tokeGetter()
     SubcategoryComponent,
     ProductComponent,
     AddproductComponent,
+    ProductsComponent,
   ],
   imports: [
     BrowserModule,

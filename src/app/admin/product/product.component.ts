@@ -11,6 +11,7 @@ import { ProductService } from 'src/app/services/product.service';
 import { SizeService } from 'src/app/services/size.service';
 import {ToastrService} from "ngx-toastr"
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
@@ -18,7 +19,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 })
 
 export class ProductComponent implements OnInit {
-
+  baseURL:any=environment.baseUrl;
 
   products:Product[];
   images:string[];

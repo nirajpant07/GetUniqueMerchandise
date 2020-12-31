@@ -19,7 +19,7 @@ export class BasicService {
   //signup variable
   signupForm: FormGroup;
   baseURL: string = environment.baseUrl;
-
+  UIData:any;
 
   constructor(private http: HttpClient, private router: Router, private jwthelper: JwtHelperService) { }
 
@@ -58,4 +58,9 @@ export class BasicService {
       return "";
     return token.Role;
   }
+  getUIData(){
+    return this.http.get(this.baseURL+"/api/View/getCategoryAndSubcategory");
+  }
+
+
 }

@@ -73,7 +73,7 @@
                                 <td>{{s.SubcategoryName}}</td>
                                 <td>{{s.Description}}</td>
                                 <td>{{s.CategoryName}}</td>
-                                <td><img class="img-responsive" style="height: 7em;width:11em;" src="{{s.Image}}" alt="{{s.SubcategoryName}}"></td>
+                                <td><img class="img-responsive" style="height: 7em;width:11em;" src="{{baseURL}}{{s.Image}}" alt="{{s.SubcategoryName}}"></td>
                                 
                                 <td style="width: 100px;"><button  data-toggle="tooltip" title="Delete"
                                     (click)="deleteSubcategory(s)" class="btn btn-danger m-1"><i class="fa fa-trash fa-1x"></i></button>  <button   data-toggle="tooltip" title="Edit"

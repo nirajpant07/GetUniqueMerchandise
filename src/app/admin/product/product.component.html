@@ -86,7 +86,8 @@
              
             <div class="show-image m-4 p-0 " style="border: 0px solid black;" *ngFor="let i of images">
               
-                <img class="img-thumbnail" [src]="i" height="200" width="200" style="border:0px solid black;">
+
+  <img class="img-thumbnail" src="{{i}}" height="200" width="200" style="border:0px solid black;">
                 
             </div>
             
@@ -95,7 +96,7 @@
              
               <div class="show-image m-3 p-0 " style="border: 1px solid black;" *ngFor="let i of productImages">
                 
-                  <img class="img-thumbnail" [src]="i.Image" height="200" width="200" style="border:0px solid black;">
+                  <img class="img-thumbnail" src="{{baseURL}}{{i.Image}}" height="200" width="200" style="border:0px solid black;">
                   <button  (click)="deleteImage(i)" style="border-radius: 40px;color:white;background-color: #f3441d;font-weight: 30px;" class="delete" type="button"  ><i class="fa fa-times"></i></button>
               </div>
               

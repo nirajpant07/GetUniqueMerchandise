@@ -7,6 +7,7 @@ import { ProductComponent } from './admin/product/product.component';
 import { SubcategoryComponent } from './admin/subcategory/subcategory.component';
 import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './home/home.component';
+import { ProductsComponent } from './home/products/products.component';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
 
@@ -21,7 +22,7 @@ const routes: Routes = [
   { path: 'subcategory', component: SubcategoryComponent, canActivate : [AuthGuard]},
   { path: 'products', component: ProductComponent, canActivate : [AuthGuard]},
   { path: 'add-product', component: AddproductComponent, canActivate : [AuthGuard]},
-
+  { path: 'shop', component: ProductsComponent},
 ];
 
 @NgModule({

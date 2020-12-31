@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CategoryService } from 'src/app/services/category.service';
 import { Category } from 'src/app/models/Category';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-category',
@@ -10,6 +11,7 @@ import { Category } from 'src/app/models/Category';
 })
 export class CategoryComponent implements OnInit {
 
+  baseURL:any=environment.baseUrl;
   defaultImageURL: any ="assets/images/default-image.jpg";
   //imageURL:any=this.defaultImageURL;
   ResultedFile:any=this.defaultImageURL;
@@ -137,7 +139,7 @@ export class CategoryComponent implements OnInit {
     this.categoryService.CategoryForm.controls['CategoryID'].setValue(category.CategoryID);
     this.categoryService.CategoryForm.controls['CategoryName'].setValue(category.CategoryName);
     this.categoryService.CategoryForm.controls['Description'].setValue(category.Description);
-    this.ResultedFile=category.Image;
+    this.ResultedFile=this.baseURL+category.Image;
     //this.categoryService.CategoryForm.controls['Image'].setValue(category.Image);
   }
 
