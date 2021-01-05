@@ -43,72 +43,75 @@
   <br>
   </div>
   <br>
-  <div >
+  <div class="Popular-Picks" >
     <div style="margin-left: 2%; margin-right: 2%;" class="table">
       <div class="row">
       <div class="col">
-        <div class="Category-Men-Tshirt">
+        <div style="margin-left: 20px; margin-right: auto;" class="Category-Men-Tshirt">
           <h1>
-            Mens T-shirts
+            Mens
           </h1>
           <h2 class="text-muted">
             popular Picks
           </h2>
-          <div class="table">
+          <div class="table" style="margin-left: 2%; margin-right: 2%;" >
             <div class="row">
-              <div *ngFor="let p of MenProducts;let i=index" class="card product-card m-2"
-              style="width: 15rem;cursor: pointer;">
-              <div class="img-responsive text-center p-2 show-image" style="width:230px;height: 300px;overflow:hidden;">
-                  <img class="card-img-top" src="{{ baseURL }}{{ p.ProductImages[0].Image}}"
-                      alt="Card image cap" style="width:100%">
-                      <i class="fa fa-heart btn cart"></i>
+                <div *ngFor="let p of MenProducts;let i=index">
+                  <div *ngIf="!(i>5)">
+                  <div class="card product-card m-2" style="width:200px;height:300px ;cursor: pointer; align-items: center;">
+                   
+                      <div class="img-responsive" style="width:180px;height: 240px;overflow:hidden;margin-top: 10px;">
+                        <img class="card-img-top" src="{{ baseURL }}{{ p.ProductImages[0].Image}}" alt="Card image cap">
+                    </div>
+                    <div style="width: 95%; margin-top: 5px; margin-bottom: 5px;">
+                      <div class="card" style="width: auto; height: 70px;">
+                        <h6 class="card-title" style="  margin-top:auto;text-align: center; margin-bottom: auto; display: block;" >{{p.ProductName}}</h6>                          
+                    </div>
+                    </div>
+                    <div class="card-footer" style="width: 100%;margin-bottom: 0px;">
+                        <button href="#" class="btn btn-primary btn-block"><i class="fa fa-shopping-cart "></i> &nbsp; Add To Cart</button>
+                    </div> 
+                    </div>
+      
+                </div>
               </div>
-    
-              <div class="card card-body m-3">
-                  <h5 class="card-title">{{p.ProductName}}</h5>
-                  <p class="card-text">{{p.ProductDescription}}</p>                               
-              </div>
-              <div class="card-footer">
-                  <button href="#" class="btn btn-primary btn-block"><i class="fa fa-shopping-cart "></i> &nbsp; Add To Cart</button>
-              </div> 
-          </div>
             </div>
           </div>
-         
         </div>
-      
       </div>
+
       <div class="col">
-        <div class="Category-Women-Tshirt">
+        <div style="margin-left: 20px;margin-right: auto;" class="Category-Women-Tshirt">
           <h1>
-            Womens T-shirts
+            Womens
           </h1>
           <h2 class="text-muted">
-            Popular Picks
+            popular Picks
           </h2>
-          <div class="table">
+          <div class="table" style="margin-left: 2%; margin-right: 2%;" >
             <div class="row">
-              <div *ngFor="let p of WomenProducts;let i=index" class="card product-card m-2"
-              style="width: 15rem;cursor: pointer;">
-              <div class="img-responsive text-center p-2 show-image" style="width:230px;height: 300px;overflow:hidden;">
-                  <img class="card-img-top" src="{{ baseURL }}{{ p.ProductImages[0].Image}}"
-                      alt="Card image cap" style="width:100%">
-                      <i class="fa fa-heart btn cart"></i>
+                <div *ngFor="let p of WomenProducts;let i=index">
+                  <div *ngIf="!(i>5)">
+                  <div class="card product-card m-2" style="width:200px;height:300px ;cursor: pointer; align-items: center;">
+                   
+                      <div class="img-responsive" style="width:180px;height: 240px;overflow:hidden;margin-top: 10px;">
+                        <img class="card-img-top" src="{{ baseURL }}{{ p.ProductImages[0].Image}}" alt="Card image cap">
+                    </div>
+                    <div style="width: 95%; margin-top: 5px; margin-bottom: 5px;">
+                      <div class="card" style="width: auto; height: 70px;">
+                        <h6 class="card-title" style="  margin-top:auto;text-align: center; margin-bottom: auto; display: block;" >{{p.ProductName}}</h6>                          
+                    </div>
+                    </div>
+                    <div class="card-footer" style="width: 100%;margin-bottom: 0px;">
+                        <button href="#" class="btn btn-primary btn-block"><i class="fa fa-shopping-cart "></i> &nbsp; Add To Cart</button>
+                    </div> 
+                    </div>
+      
+                </div>
               </div>
-    
-              <div class="card card-body m-3">
-                  <h5 class="card-title">{{p.ProductName}}</h5>
-                  <p class="card-text">{{p.ProductDescription}}</p>                               
-              </div>
-              <div class="card-footer">
-                  <button href="#" class="btn btn-primary btn-block"><i class="fa fa-shopping-cart "></i> &nbsp; Add To Cart</button>
-              </div>
-             </div>
             </div>
-
           </div>
-
-          </div>
+        </div>
       </div>
       </div>
       </div>

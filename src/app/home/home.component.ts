@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit
   {
     this.productService.getProductsFromCategory(6).subscribe(
       (data:any)=>{
-        this.MenProducts=data ;
+        this.MenProducts=data;
       },
       (err:any)=>{
         console.log("Error!");
